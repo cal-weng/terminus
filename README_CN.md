@@ -82,14 +82,14 @@ Olares 已在以下平台完成测试验证：
  
 参考[快速上手指南](https://docs.olares.xyz/manual/get-started/)安装并激活 Olares。
 
-## 技术栈
-Olares 的架构基于两个核心原则：
+## 系统架构
+Olares 的架构设计遵循两个核心原则：
 - 参考 Android 模式，控制软件权限和交互性，确保系统的流畅性和安全性。
 - 借鉴云原生技术，高效管理硬件和中间件服务。
 
   ![架构](https://file.bttcdn.com/github/terminus/v2/olares-arch.jpeg)
 
-详细描述请参考 [Olares 架构](https://docs.olares.xyz/zh/manual/platform-architecture.html)文档。
+详细描述请参考 [Olares 架构](https://docs.joinolares.cn/zh/manual/platform-architecture.html)文档。
 
 ## 功能特性
 

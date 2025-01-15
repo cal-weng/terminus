@@ -85,12 +85,12 @@ To get started with Olares on your own device, follow the [Getting Started Guide
 ## Architecture 
 
 Olares' architecture is based on two core principles:
--	Adopting an Android-like approach to control software permissions and interactivity, ensuring smooth and secure system operations.
--	Leveraging cloud-native technologies to manage hardware and middleware services efficiently.
+- Adopts an Android-like approach to control software permissions and interactivity, ensuring smooth and secure system operations.
+- Leverages cloud-native technologies to manage hardware and middleware services efficiently.
 
   ![Olares Architecture](https://file.bttcdn.com/github/terminus/v2/olares-arch.jpeg)
 
- For detailed description of each component, refer to [Olares architecture](https://docs.olares.xyz/zh/manual/platform-architecture.html).
+ For detailed description of each component, refer to [Olares architecture](https://docs.olares.xyz/manual/platform-architecture.html).
 
 ## Features
 
