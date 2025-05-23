@@ -65,11 +65,8 @@ Olares 是为本地端侧 AI 打造的开源私有云操作系统，可轻松将
 
 Olares 已在以下 Linux 平台完成测试与验证：
 
-- Ubuntu 20.04 LTS 及以上版本
+- Ubuntu 24.04 LTS 及以上版本
 - Debian 11 及以上版本
-
-> **其他安装方式**
-> Olares 也支持在 macOS、Windows、PVE、树莓派等平台上运行，或通过 Docker Compose 在 Linux 上部署。但请注意，这些方式**仅适用于开发和测试环境**。详细安装指南请参阅[其他安装方式](https://docs.joinolares.cn/zh/developer/install/additional-installations.html)。
 
 ### 安装 Olares
  
@@ -99,77 +96,16 @@ Olares 提供了一系列功能，旨在提升安全性、使用便捷性以及�
 
 ## 项目目录
 
-Olares 包含多个在 GitHub 上公开可用的代码仓库。当前仓库负责操作系统的最终编译、打包、安装和升级，而特定的更改主要在各自对应的仓库中进行。
+Olares 代码库中的主要目录如下：
 
-以下表格列出了 Olares 下的项目目录及其对应的仓库。
-
-<details>
-<summary><b>框架组件</b></summary>
-
-| 路径 | 仓库 | 说明 |
-| --- | --- | --- |
-| [frameworks/app-service](https://github.com/beclab/olares/tree/main/frameworks/app-service) | <https://github.com/beclab/app-service> | 系统框架组件，负责提供全系统应用的生命周期管理及多种安全控制。 |
-| [frameworks/backup-server](https://github.com/beclab/olares/tree/main/frameworks/backup-server) | <https://github.com/beclab/backup-server> | 系统框架组件，提供定时的全量或增量集群备份服务。 |
-| [frameworks/bfl](https://github.com/beclab/olares/tree/main/frameworks/bfl) | <https://github.com/beclab/bfl> | 启动器后端（Backend For Launcher, BFL），作为用户访问点的系统框架组件，整合并代理各种后端服务的接口。 |
-| [frameworks/GPU](https://github.com/beclab/olares/tree/main/frameworks/GPU) | <https://github.com/grgalex/nvshare> | GPU共享机制，允许多个进程（或运行在 Kubernetes 上的容器）安全地同时在同一物理 GPU 上运行，每个进程都可访问全部 GPU 内存。 |
-| [frameworks/l4-bfl-proxy](https://github.com/beclab/olares/tree/main/frameworks/l4-bfl-proxy) | <https://github.com/beclab/l4-bfl-proxy> | 针对 BFL 的第4层网络代理。通过预读服务器名称指示（SNI），提供一条动态路由至用户的 Ingress。 |
-| [frameworks/osnode-init](https://github.com/beclab/olares/tree/main/frameworks/osnode-init) | <https://github.com/beclab/osnode-init> | 系统框架组件，用于初始化新节点加入集群时的节点数据。 |
-| [frameworks/system-server](https://github.com/beclab/olares/tree/main/frameworks/system-server) | <https://github.com/beclab/system-server> | 作为系统运行时框架的一部分，提供应用间安全通信的机制。 |
-| [frameworks/tapr](https://github.com/beclab/olares/tree/main/frameworks/tapr) | <https://github.com/beclab/tapr> | Olares 应用运行时组件。 |
-
-</details>
-
-<details>
-<summary><b>系统级应用程序和服务</b></summary>
-
-| 路径 | 仓库 | 说明 |
-| --- | --- | --- |
-| [apps/analytic](https://github.com/beclab/olares/tree/main/apps/analytic) | <https://github.com/beclab/analytic> | 基于 [Umami](https://github.com/umami-software/umami) 开发的 Analytic，是一个简单、快速、注重隐私的 Google Analytics 替代品。 |
-| [apps/market](https://github.com/beclab/olares/tree/main/apps/market) | <https://github.com/beclab/market> | 此代码库部署了 Olares 应用市场的前端部分。 |
-| [apps/market-server](https://github.com/beclab/olares/tree/main/apps/market-server) | <https://github.com/beclab/market> | 此代码库部署了 Olares 应用市场的后端部分。 |
-| [apps/argo](https://github.com/beclab/olares/tree/main/apps/argo) | <https://github.com/argoproj/argo-workflows> | 用于协调本地推荐算法容器执行的工作流引擎。 |
-| [apps/desktop](https://github.com/beclab/olares/tree/main/apps/desktop) | <https://github.com/beclab/desktop> | 系统内置的桌面应用程序。 |
-| [apps/devbox](https://github.com/beclab/olares/tree/main/apps/devbox) | <https://github.com/beclab/devbox> | 为开发者提供的 IDE，用于移植和开发 Olares 应用。 |
-| [apps/vault](https://github.com/beclab/olares/tree/main/apps/vault) | <https://github.com/beclab/termipass> | 基于 [Padloc](https://github.com/padloc/padloc) 开发的团队和企业的免费 1Password 和 Bitwarden 替代品，作为客户端帮助您管理 DID、Olares ID和 Olares 设备。 |
-| [apps/files](https://github.com/beclab/olares/tree/main/apps/files) | <https://github.com/beclab/files> | 基于 [Filebrowser](https://github.com/filebrowser/filebrowser) 修改的内置文件管理器，管理 Drive、Sync 和各种 Olares 物理节点上的文件。|
-| [apps/notifications](https://github.com/beclab/olares/tree/main/apps/notifications) | <https://github.com/beclab/notifications> | Olares 的通知系统。 |
-| [apps/profile](https://github.com/beclab/olares/tree/main/apps/profile) | <https://github.com/beclab/profile> | Olares 中的 Linktree 替代品。|
-| [apps/rsshub](https://github.com/beclab/olares/tree/main/apps/rsshub) | <https://github.com/beclab/rsshub> | 基于 [RssHub](https://github.com/DIYgod/RSSHub) 的 RSS 订阅管理器。 |
-| [apps/settings](https://github.com/beclab/olares/tree/main/apps/settings) | <https://github.com/beclab/settings> | 内置系统设置。 |
-| [apps/system-apps](https://github.com/beclab/olares/tree/main/apps/system-apps) | <https://github.com/beclab/system-apps> | 基于 *kubesphere/console* 项目构建的 system-service 提供一个自托管的云平台，通过视觉仪表板和功能丰富的 ControlHub 帮助用户了解和控制系统的运行状态和资源使用。 |
-| [apps/wizard](https://github.com/beclab/olares/tree/main/apps/wizard) | <https://github.com/beclab/wizard> | 向用户介绍系统激活过程的向导应用程序。 |
-</details>
-
-<details>
-<summary><b>第三方组件和服务</b></summary>
-
-| 路径 | 仓库 | 说明 |
-| --- | --- | --- |
-| [third-party/authelia](https://github.com/beclab/olares/tree/main/third-party/authelia) | <https://github.com/beclab/authelia> | 一个开源的认证和授权服务器，通过网络门户为应用程序提供双因素认证和单点登录（SSO）。 |
-| [third-party/headscale](https://github.com/beclab/olares/tree/main/third-party/headscale) | <https://github.com/beclab/headscale> | 在 Olares 中的 Tailscale 控制服务器的开源自托管实现，用于管理 LarePass 中不同设备上的 Tailscale。|
-| [third-party/infisical](https://github.com/beclab/olares/tree/main/third-party/infisical) | <https://github.com/beclab/infisical> | 一个开源的密钥管理平台，可以在团队/基础设施之间同步密钥并防止泄露。 |
-| [third-party/juicefs](https://github.com/beclab/olares/tree/main/third-party/juicefs) | <https://github.com/beclab/juicefs-ext> | 基于 Redis 和 S3 之上构建的分布式 POSIX 文件系统，允许不同节点上的应用通过 POSIX 接口访问同一数据。 |
-| [third-party/ks-console](https://github.com/beclab/olares/tree/main/third-party/ks-console) | <https://github.com/kubesphere/console> | Kubesphere 控制台，允许通过 Web GUI 进行集群管理。 |
-| [third-party/ks-installer](https://github.com/beclab/olares/tree/main/third-party/ks-installer) | <https://github.com/beclab/ks-installer-ext> | Kubesphere 安装组件，根据集群资源定义自动创建 Kubesphere 集群。 |
-| [third-party/kube-state-metrics](https://github.com/beclab/olares/tree/main/third-party/kube-state-metrics) | <https://github.com/beclab/kube-state-metrics> | kube-state-metrics（KSM）是一个简单的服务，监听 Kubernetes API 服务器并生成关于对象状态的指标。 |
-| [third-party/notification-manager](https://github.com/beclab/olares/tree/main/third-party/notification-manager) | <https://github.com/beclab/notification-manager-ext> | Kubesphere 的通知管理组件，用于统一管理多个通知渠道和自定义聚合通知内容。 |
-| [third-party/predixy](https://github.com/beclab/olares/tree/main/third-party/predixy) | <https://github.com/beclab/predixy> | Redis 集群代理服务，自动识别可用节点并添加命名空间隔离。 |
-| [third-party/redis-cluster-operator](https://github.com/beclab/olares/tree/main/third-party/redis-cluster-operator) | <https://github.com/beclab/redis-cluster-operator> | 一个基于 Kubernetes 的云原生工具，用于创建和管理 Redis 集群。 |
-| [third-party/seafile-server](https://github.com/beclab/olares/tree/main/third-party/seafile-server) | <https://github.com/beclab/seafile-server> | Seafile（同步驱动器）的后端服务，用于处理数据存储。 |
-| [third-party/seahub](https://github.com/beclab/olares/tree/main/third-party/seahub) | <https://github.com/beclab/seahub> | Seafile（同步驱动器）的前端和中间件服务，用于处理文件共享、数据同步等。 |
-| [third-party/tailscale](https://github.com/beclab/olares/tree/main/third-party/tailscale) | <https://github.com/tailscale/tailscale> | Tailscale 已在所有平台的 LarePass 中集成。 |
-</details>
-
-<details>
-<summary><b>其他库和组件</b></summary>
-
-| 路径 | 仓库 | 说明 |
-| --- | --- | --- |
-| [build/installer](https://github.com/beclab/olares/tree/main/build/installer) |     | 用于生成安装程序构建的模板。 |
-| [build/manifest](https://github.com/beclab/olares/tree/main/build/manifest) |     | 安装构建镜像列表模板。 |
-| [libs/fs-lib](https://github.com/beclab/olares/tree/main/libs) | <https://github.com/beclab/fs-lib> | 基于 JuiceFS 实现的 iNotify 兼容接口的SDK库。 |
-| [scripts](https://github.com/beclab/olares/tree/main/scripts) |     | 生成安装程序构建的辅助脚本。 |
-</details>
+* **`apps`**: 用于存放系统应用，主要是 `larepass` 的代码。
+* **`cli`**: 用于存放 `olares-cli`（Olares 的命令行界面工具）的代码。
+* **`daemon`**: 用于存放 `olaresd`（系统守护进程）的代码。
+* **`docs`**: 用于存放 Olares 项目的文档。
+* **`framework`**: 用来存放 Olares 系统服务代码。
+* **`infrastructure`**: 用于存放计算，存储，网络，GPU 等基础设施的代码。
+* **`platform`**: 用于存放数据库、消息队列等云原生组件的代码。
+* **`vendor`**: 用于存放来自第三方硬件供应商的代码。
 
 ## 社区贡献
 
