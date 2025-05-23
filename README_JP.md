@@ -23,15 +23,15 @@ https://github.com/user-attachments/assets/3089a524-c135-4f96-ad2b-c66bf4ee7471
 *Olaresを使って、ローカルAIアシスタントを構築し、データを場所を問わず同期し、ワークスペースをセルフホストし、独自のメディアをストリーミングし、その他多くのことを実現できます。*
 
 <p align="center">
-  <a href="https://olares.xyz">ウェブサイト</a> ·
-  <a href="https://docs.olares.xyz">ドキュメント</a> ·
-  <a href="https://olares.xyz/larepass">LarePassをダウンロード</a> ·
+  <a href="https://olares.com">ウェブサイト</a> ·
+  <a href="https://docs.olares.com">ドキュメント</a> ·
+  <a href="https://olares.com/larepass">LarePassをダウンロード</a> ·
   <a href="https://github.com/beclab/apps">Olaresアプリ</a> ·
-  <a href="https://space.olares.xyz">Olares Space</a>
+  <a href="https://space.olares.com">Olares Space</a>
 </p>
 
 > [!IMPORTANT]  
-> 最近、TerminusからOlaresへのリブランディングを完了しました。詳細については、[リブランディングブログ](https://blog.olares.xyz/terminus-is-now-olares/)をご覧ください。
+> 最近、TerminusからOlaresへのリブランディングを完了しました。詳細については、[リブランディングブログ](https://blog.olares.com/terminus-is-now-olares/)をご覧ください。
 
 Olaresを使用して、ハードウェアをAIホームサーバーに変換します。Olaresは、ローカルAIのためのオープンソース主権クラウドOSです。
 
@@ -70,7 +70,7 @@ Olaresは以下のLinuxプラットフォームで動作検証を完了してい
 - Debian 11 以降
 
 ### Olaresのセットアップ
-自分のデバイスでOlaresを始めるには、[はじめにガイド](https://docs.olares.xyz/manual/get-started/)に従ってステップバイステップの手順を確認してください。
+自分のデバイスでOlaresを始めるには、[はじめにガイド](https://docs.olares.com/manual/get-started/)に従ってステップバイステップの手順を確認してください。
 
 ## アーキテクチャ
 
@@ -80,7 +80,7 @@ Olaresのアーキテクチャは、次の2つの基本原則に基づいてい�
 
   ![Olaresのアーキテクチ](https://file.bttcdn.com/github/terminus/v2/olares-arch-3.png)
 
-各コンポーネントの詳細については、[Olares アーキテクチャ](https://docs.olares.xyz/manual/system-architecture.html)（英語版）をご参照ください。
+各コンポーネントの詳細については、[Olares アーキテクチャ](https://docs.olares.com/manual/system-architecture.html)（英語版）をご参照ください。
 
 ## 機能
 
@@ -113,11 +113,11 @@ Olaresは、セキュリティ、使いやすさ、開発の柔軟性を向上�
 あらゆる形での貢献を歓迎します：
 
 - Olaresで独自のアプリケーションを開発したい場合は、以下を参照してください：<br>
-https://docs.olares.xyz/developer/develop/
+https://docs.olares.com/developer/develop/
 
 
 - Olaresの改善に協力したい場合は、以下を参照してください：<br>
-https://docs.olares.xyz/developer/contribute/olares.html
+https://docs.olares.com/developer/contribute/olares.html
 
 ## コミュニティと連絡先
 

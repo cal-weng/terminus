@@ -23,11 +23,11 @@ https://github.com/user-attachments/assets/3089a524-c135-4f96-ad2b-c66bf4ee7471
 *Build your local AI assistants, sync data across places, self-host your workspace, stream your own media, and more—all in your personal cloud on Olares.*
 
 <p align="center">
-  <a href="https://olares.xyz">Website</a> ·
-  <a href="https://docs.olares.xyz">Documentation</a> ·
-  <a href="https://olares.xyz/larepass">Download LarePass</a> ·
+  <a href="https://olares.com">Website</a> ·
+  <a href="https://docs.olares.com">Documentation</a> ·
+  <a href="https://olares.com/larepass">Download LarePass</a> ·
   <a href="https://github.com/beclab/apps">Olares Apps</a> ·
-  <a href="https://space.olares.xyz">Olares Space</a>
+  <a href="https://space.olares.com">Olares Space</a>
 </p>
 
 >*The modern internet built on public clouds is increasingly threatening your personal data privacy. As reliance on services like ChatGPT, Midjourney, and Facebook grows, so does the risk to your digital autonomy. Your data lives on their servers, subject to their terms, tracking, and potential censorship.*
@@ -68,7 +68,7 @@ Olares has been tested and verified on the following Linux platforms:
 - Debian 11 or later
 
 ### Set up Olares
-To get started with Olares on your own device, follow the [Getting Started Guide](https://docs.olares.xyz/manual/get-started/) for step-by-step instructions.
+To get started with Olares on your own device, follow the [Getting Started Guide](https://docs.olares.com/manual/get-started/) for step-by-step instructions.
 
 ## Architecture 
 
@@ -78,7 +78,7 @@ Olares' architecture is based on two core principles:
 
   ![Olares Architecture](https://file.bttcdn.com/github/terminus/v2/olares-arch-3.png)
 
- For detailed description of each component, refer to [Olares architecture](https://docs.olares.xyz/manual/system-architecture.html).
+ For detailed description of each component, refer to [Olares architecture](https://docs.olares.com/manual/system-architecture.html).
 
 ## Features
 
@@ -111,11 +111,11 @@ This section lists the main directories in the Olares repository:
 We are welcoming contributions in any form:
 
 - If you want to develop your own applications on Olares, refer to:<br>
-https://docs.olares.xyz/developer/develop/
+https://docs.olares.com/developer/develop/
 
 
 - If you want to help improve Olares, refer to:<br>
-https://docs.olares.xyz/developer/contribute/olares.html
+https://docs.olares.com/developer/contribute/olares.html
 
 ## Community & contact
 
