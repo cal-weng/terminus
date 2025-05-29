@@ -32,6 +32,7 @@
 >
 >*It's time for a change.* 
 
+![Personal Cloud](https://file.bttcdn.com/github/olares/public-cloud-to-personal-cloud.jpg)
 We believe you have a fundamental right to control your digital life. The most effective way to uphold this right is by hosting your data locally, on your own hardware.
 
 Olares is an **open-source personal cloud operating system** designed to empower you to own and manage your digital assets locally. Instead of relying on public cloud services, you can deploy powerful open-source alternatives locally on Olares, such as Ollama for hosting LLMs, SD WebUI for image generation, and Mastodon for building censor free social space. Imagine the power of the cloud, but with you in complete command.
