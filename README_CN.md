@@ -1,6 +1,6 @@
 <div align="center">
 
-# Olares：开源个人云操作系统，助您重获数据主权
+# Olares：助您重获数据主权的开源个人云
 
 [![Mission](https://img.shields.io/badge/Mission-Let%20people%20own%20their%20data%20again-purple)](#)<br/>
 [![Last Commit](https://img.shields.io/github/last-commit/beclab/terminus)](https://github.com/beclab/olares/commits/main)
@@ -18,9 +18,6 @@
 
 </div>
 
-
-https://github.com/user-attachments/assets/3089a524-c135-4f96-ad2b-c66bf4ee7471
-
 *Olares 让你体验更多可能：构建个人 AI 助理、随时随地同步数据、自托管团队协作空间、打造私人影视厅——无缝整合你的数字生活。*
 
 <p align="center">
@@ -34,6 +31,8 @@ https://github.com/user-attachments/assets/3089a524-c135-4f96-ad2b-c66bf4ee7471
 > *基于公有云构建的现代互联网日益威胁着您的个人数据隐私。随着您对 ChatGPT、Midjourney 和脸书等服务的依赖加深，您对数字自主权的掌控也在减弱。您的数据存储在他人服务器上，受其条款约束，被追踪并审查。*
 >
 > *是时候做出改变了。*
+
+![个人云](https://file.bttcdn.com/github/olares/public-cloud-to-personal-cloud.jpg)
 
 我们坚信，**您拥有掌控自己数字生活的基本权利**。维护这一权利最有效的方式，就是将您的数据托管在本地，在您自己的硬件上。
 
@@ -77,11 +76,10 @@ Olares 已在以下 Linux 平台完成测试与验证：
 参考[快速上手指南](https://docs.joinolares.cn/zh/manual/get-started/)安装并激活 Olares。
 
 ## 系统架构
-Olares 的架构设计遵循两个核心原则：
-- 参考 Android 模式，控制软件权限和交互性，确保系统的流畅性和安全性。
-- 借鉴云原生技术，高效管理硬件和中间件服务。
 
-  ![架构](https://file.bttcdn.com/github/terminus/v2/olares-arch-3.png)
+公有云具有基础设施即服务（IaaS）、平台即服务（PaaS）和软件即服务（SaaS）等层级。Olares 为这些层级提供了开源替代方案。
+
+  ![技术栈](https://file.bttcdn.com/github/terminus/v2/tech-stack-olares.jpeg)
 
 详细描述请参考 [Olares 架构](https://docs.joinolares.cn/zh/manual/system-architecture.html)文档。
 

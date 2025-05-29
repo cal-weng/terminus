@@ -1,6 +1,6 @@
 <div align="center">
 
-# Olares: An Open-Source Personal Cloud OS to Reclaim Your Data<!-- omit in toc -->
+# Olares: An Open-Source Personal Cloud to Reclaim Your Data<!-- omit in toc -->
 
 [![Mission](https://img.shields.io/badge/Mission-Let%20people%20own%20their%20data%20again-purple)](#)<br/>
 [![Last Commit](https://img.shields.io/github/last-commit/beclab/olares)](https://github.com/beclab/olares/commits/main)
@@ -17,8 +17,6 @@
 </p>
 
 </div>
-
-https://github.com/user-attachments/assets/3089a524-c135-4f96-ad2b-c66bf4ee7471
 
 *Build your local AI assistants, sync data across places, self-host your workspace, stream your own media, and more—all in your personal cloud on Olares.*
 
@@ -40,7 +38,7 @@ Olares is an **open-source personal cloud operating system** designed to empower
 
 > 🌟 *Star us to receive instant notifications about new releases and updates.* 
 
-## Key Features & Use Cases
+## Key use cases
 
 Here is why and where you can count on Olares for private, powerful, and secure sovereign cloud experience:
 
@@ -76,11 +74,9 @@ To get started with Olares on your own device, follow the [Getting Started Guide
 
 ## Architecture 
 
-Olares' architecture is based on two core principles:
-- Adopts an Android-like approach to control software permissions and interactivity, ensuring smooth and secure system operations.
-- Leverages cloud-native technologies to manage hardware and middleware services efficiently.
+Just as Public clouds offer IaaS, PaaS, and SaaS layers, Olares provides open-source alternatives to each of these layers.
 
-  ![Olares Architecture](https://file.bttcdn.com/github/terminus/v2/olares-arch-3.png)
+  ![Tech Stacks](https://file.bttcdn.com/github/terminus/v2/tech-stack-olares.jpeg)
 
  For detailed description of each component, refer to [Olares architecture](https://docs.olares.com/manual/system-architecture.html).
 
@@ -97,7 +93,7 @@ Olares offers a wide array of features designed to enhance security, ease of use
 - **Seamless anywhere access**: Access your devices from anywhere using dedicated clients for mobile, desktop, and browsers.
 - **Development tools**: Comprehensive development tools for effortless application development and porting.
 
-## Project Navigation
+## Project navigation
 > We are currently migrating the code of subprojects from other repositories within the organization to this repository. This process may take a few months. Once completed, you will be able to get a comprehensive view of the Olares system through this repository.
 
 
