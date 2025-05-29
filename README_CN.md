@@ -96,9 +96,24 @@ Olares 提供了一系列功能，旨在提升安全性、使用便捷性以及�
 - **无缝访问**：通过移动端、桌面端和网页浏览器客户端，从全球任何地方访问设备。
 - **开发工具**：提供全面的工具支持，便于开发和移植应用，加速开发进程。
 
+以下是用户界面的一些截图预览：
+
+| **桌面：AI驱动的个人桌面**     |  **文件管理器：安全存储数据**
+| :--------: | :-------: |
+| ![桌面](https://file.bttcdn.com/github/terminus/v2/desktop.jpg) | ![文件](https://file.bttcdn.com/github/terminus/v2/files.jpg) |
+| **Vault：密码无忧管理**|**市场：可控的应用生态系统** |
+| ![vault](https://file.bttcdn.com/github/terminus/v2/vault.jpg) | ![市场](https://file.bttcdn.com/github/terminus/v2/market.jpg) |
+|**Wise：数字后花园** | **设置：高效管理 Olares** |
+| ![设置](https://file.bttcdn.com/github/terminus/v2/wise.jpg) | ![](https://file.bttcdn.com/github/terminus/v2/settings.jpg) |
+|**仪表盘：持续监控 Olares**  | **Profile：独特的个人主页** |
+| ![面板](https://file.bttcdn.com/github/terminus/v2/dashboard.jpg) | ![profile](https://file.bttcdn.com/github/terminus/v2/profile.jpg) |
+| **Studio：一站式开发、调试和部署**|**控制面板：轻松管理 Kubernetes 集群**  |
+| ![Devbox](https://file.bttcdn.com/github/terminus/v2/devbox.jpg) | ![控制中心](https://file.bttcdn.com/github/terminus/v2/controlhub.jpg)|
+
+
 ## 项目目录
 
-> 我们正将子项目的代码从组织中其他代码仓库移动到当前仓库，这个过程可能会持续几个月。届时您就可以通过本仓库了解 Olares 系统的全貌
+> 我们正将 Olares 子项目的代码移动到当前仓库。此过程可能会持续数月。届时您就可以通过本仓库了解 Olares 系统的全貌。
 > 
 Olares 代码库中的主要目录如下：
 

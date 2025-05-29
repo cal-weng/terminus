@@ -94,8 +94,24 @@ Olares offers a wide array of features designed to enhance security, ease of use
 - **Seamless anywhere access**: Access your devices from anywhere using dedicated clients for mobile, desktop, and browsers.
 - **Development tools**: Comprehensive development tools for effortless application development and porting.
 
+Here are some screenshots from the UI for a sneak peek:
+
+| **Desktop–AI-powered personal desktop**     |  **Files–A secure home to your data**
+| :--------: | :-------: |
+| ![Desktop](https://file.bttcdn.com/github/terminus/v2/desktop.jpg) | ![Files](https://file.bttcdn.com/github/terminus/v2/files.jpg) |
+| **Vault–1Password alternative**|**Market–App ecosystem in your control** |
+| ![vault](https://file.bttcdn.com/github/terminus/v2/vault.jpg) | ![market](https://file.bttcdn.com/github/terminus/v2/market.jpg) |
+|**Wise–Your digital secret garden** | **Settings–Manage Olares efficiently** |
+| ![settings](https://file.bttcdn.com/github/terminus/v2/wise.jpg) | ![](https://file.bttcdn.com/github/terminus/v2/settings.jpg) |
+|**Dashboard–Constant system monitoring**  | **Profile–Your unique homepage** |
+| ![dashboard](https://file.bttcdn.com/github/terminus/v2/dashboard.jpg) | ![profile](https://file.bttcdn.com/github/terminus/v2/profile.jpg) |
+| **Studio–Develop, debug, and deploy**|**Control Hub–Manage Kubernetes clusters easily**  |
+| ![Devbox](https://file.bttcdn.com/github/terminus/v2/devbox.jpg) | ![Controlhub](https://file.bttcdn.com/github/terminus/v2/controlhub.jpg)|
+
 ## Project navigation
-> We are currently migrating the code of subprojects from other repositories within the organization to this repository. This process may take a few months. Once completed, you will be able to get a comprehensive view of the Olares system through this repository.
+
+> [!NOTE]  
+> We are currently consolidating Olares subproject code into this repository. This process may take a few months. Once finished, you will get a comprehensive view of the entire Olares system here.
 
 
 This section lists the main directories in the Olares repository:
