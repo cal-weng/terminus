@@ -1,6 +1,6 @@
 <div align="center">
 
-# Olares: An Open-Source Personal Cloud to Reclaim Your Data<!-- omit in toc -->
+# Olares: An Open-Source Personal Cloud to </br>Reclaim Your Data<!-- omit in toc -->
 
 [![Mission](https://img.shields.io/badge/Mission-Let%20people%20own%20their%20data%20again-purple)](#)<br/>
 [![Last Commit](https://img.shields.io/github/last-commit/beclab/olares)](https://github.com/beclab/olares/commits/main)
