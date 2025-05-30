@@ -45,7 +45,7 @@ Just as Public clouds offer IaaS, PaaS, and SaaS layers, Olares provides open-so
 
  For detailed description of each component, refer to [Olares architecture](https://docs.olares.com/manual/system-architecture.html).
 
-> [!TIP] How is Olares different from traditional NAS?
+> 🔍 **How is Olares different from traditional NAS?**
 >
 > Olares focuses on building an all-in-one self-hosted personal cloud experience. Its core features and target users differ significantly from traditional Network Attached Storage (NAS) systems, which primarily focus on network storage. For more details, see [Compare Olares and NAS](https://docs.olares.com/manual/olares-vs-nas.html).
 

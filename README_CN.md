@@ -46,7 +46,7 @@ Olares 是一款开源个人云操作系统，旨在让您能够轻松在本地�
 
 详细描述请参考 [Olares 架构](https://docs.olares.cn/zh/manual/system-architecture.html)文档。
 
-> [!TIP] Olares 和 NAS 有什么不同？
+>🔍**Olares 和 NAS 有什么不同？**
 >
 > Olares 致力于打造一站式的自托管个人云体验。其核心功能与用户定位，均与专注于网络存储的传统 NAS 有着显著的不同，详情请参考 [Olares 与 NAS 对比](https://docs.olares.com/zh/manual/olares-vs-nas.html)。
 
@@ -111,7 +111,7 @@ Olares 已在以下 Linux 平台完成测试与验证：
 
 ## 项目目录
 
-> [!NOTE] 仓库迁移提醒：
+> [!NOTE]
 > 我们正将 Olares 子项目的代码移动到当前仓库。此过程可能会持续数月。届时您就可以通过本仓库了解 Olares 系统的全貌。
 
 Olares 代码库中的主要目录如下：
