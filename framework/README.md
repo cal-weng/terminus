@@ -8,7 +8,6 @@ The application framework layer provides common functionality and interfaces for
 
 | Component | Description |
 | --- | --- |
-| [analytics](analytics) | Provides web analytics similar to Google Analytics. |
 | [app-service](app-service) | Handles application lifecycle management and resource allocation. |
 | [argo-workflow](argo-workflow) | A Kubernetes-native workflow engine for orchestrating parallel jobs. |
 | [authelia](authelia) | An open-source authentication and authorization server that provides multi-factor authentication and single sign-on (SSO). |
