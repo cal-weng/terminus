@@ -1,10 +1,10 @@
-# Olares Documentation
+# Olares documentation
 
 Welcome to the source repository for the official Olares documentation!
 
 This directory includes the source files for the Olares documentation website, instructions for setting up the project locally, Markdown references, and style guides to ensure consistency and quality across all documentation.
 
-## Quick Links
+## Quick links
 
 * **Published documentation site**: `https://docs.olares.com`
 * **Olares official website**: `https://www.olares.com`
@@ -32,7 +32,7 @@ npm run dev
 
 Once running, open your browser and navigate to `http://localhost:5173/` to see the local preview.
 
-### Build the Site Locally
+### Build the site locally
 
 To generate a production-ready build for final review or debugging, run:
 
@@ -54,7 +54,7 @@ To manage documentation for different product versions effectively, we use the f
 
 Creating a PR to a corresponding branch will automatically trigger the documentation build for that version.
 
-## Style Guide
+## Style guide
 
 To ensure clarity, accuracy, and a consistent tone, please read our **[Content and Style Guide](https://github.com/beclab/docs/wiki/Markdown-reference)** before contributing.
 
