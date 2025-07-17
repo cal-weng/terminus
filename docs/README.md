@@ -56,7 +56,4 @@ Creating a PR to a corresponding branch will automatically trigger the documenta
 
 ## Style guide
 
-To ensure clarity, accuracy, and a consistent tone, please read our **[Content and Style Guide](https://github.com/beclab/docs/wiki/Markdown-reference)** before contributing.
-
-```
-```
+To ensure clarity, accuracy, and a consistent tone, please read our **[Content and style guide](https://github.com/beclab/Olares/wiki/General-style-reference)** before contributing.
