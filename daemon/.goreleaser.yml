@@ -1,44 +1,35 @@
 project_name: olaresd
 builds:
-- id: linux_amd64 
-  env:
-  - CGO_ENABLED=1
-  main: ./cmd/terminusd/main.go
-  binary: olaresd
-  goarch:
-    - amd64
-  goos:
-    - linux
-  tags:
-    containers_image_openpgp
-  ldflags:
-    - -w
-    - -s
-    - -X 'github.com/beclab/Olares/daemon/cmd/terminusd/version.version=v{{ .Version }}'
-- id: linux_arm64 
-  env:
+- env:
   - CGO_ENABLED=0
   # - CC=aarch64-linux-gnu-gcc
   # - CXX=aarch64-linux-gnu-g++
   main: ./cmd/terminusd/main.go
   binary: olaresd
   goarch:
+    - amd64
     - arm64
   goos:
     - linux
+  overrides:
+    - goarch: amd64
+      goos: linux
+      goamd64: v1
+      env:
+        - CGO_ENABLED=1
   tags:
     containers_image_openpgp
   ldflags:
     - -w
     - -s
     - -X 'github.com/beclab/Olares/daemon/cmd/terminusd/version.version=v{{ .Version }}'
+    - >-
+      {{- if index .Env "OLARES_VENDOR_TYPE" }}
+      -X github.com/beclab/Olares/daemon/cmd/terminusd/version.VENDOR={{ .Env.OLARES_VENDOR_TYPE }}
+      {{- end }}
 dist: output
 archives:
 - name_template: "olaresd-v{{ .Version }}-{{ .Os }}-{{ .Arch }}"
-  replacements:
-    linux: linux
-    amd64: amd64
-    arm64: arm64
   files:
     - none*
 checksum:

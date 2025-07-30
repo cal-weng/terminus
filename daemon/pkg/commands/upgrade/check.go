@@ -8,6 +8,7 @@ import (
 	"github.com/beclab/Olares/daemon/pkg/containerd"
 	"github.com/dustin/go-humanize"
 	v1 "k8s.io/cri-api/pkg/apis/runtime/v1"
+	"k8s.io/utils/strings/slices"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -81,22 +82,22 @@ func (i *versionCompatibilityCheck) Execute(ctx context.Context, p any) (res any
 	return newExecutionRes(true, nil), nil
 }
 
-type healthCheck struct {
+type preCheck struct {
 	commands.Operation
 }
 
-var _ commands.Interface = &healthCheck{}
+var _ commands.Interface = &preCheck{}
 
-func NewHealthCheck() commands.Interface {
-	return &healthCheck{
+func NewPreCheck() commands.Interface {
+	return &preCheck{
 		Operation: commands.Operation{
-			Name: commands.UpgradeHealthCheck,
+			Name: commands.UpgradePreCheck,
 		},
 	}
 }
 
-func (i *healthCheck) Execute(ctx context.Context, p any) (res any, err error) {
-	klog.Info("Starting upgrade health check")
+func (i *preCheck) Execute(ctx context.Context, p any) (res any, err error) {
+	klog.Info("Starting upgrade pre check")
 
 	target, ok := p.(state.UpgradeTarget)
 	if !ok {
@@ -146,14 +147,8 @@ func (i *healthCheck) Execute(ctx context.Context, p any) (res any, err error) {
 		}
 	}
 	klog.Infof("Required space for image import: %s", humanize.Bytes(requiredSpace))
-	availableSpace, err := utils.GetDiskAvailableSpace(containerd.DefaultContainerdRootPath)
-	if err != nil {
-		return nil, fmt.Errorf("error checking disk space: %s", err)
-	}
-	klog.Infof("Available space of %s: %s", containerd.DefaultContainerdRootPath, humanize.Bytes(availableSpace))
-	if availableSpace < requiredSpace {
-		return nil, fmt.Errorf("insufficient disk space in: %s, required: %s, available: %s",
-			commands.TERMINUS_BASE_DIR, humanize.Bytes(requiredSpace), humanize.Bytes(availableSpace))
+	if err := tryToUseDiskSpace(containerd.DefaultContainerdRootPath, requiredSpace); err != nil {
+		return nil, err
 	}
 
 	client, err := utils.GetKubeClient()
@@ -181,19 +176,25 @@ func (i *healthCheck) Execute(ctx context.Context, p any) (res any, err error) {
 		//	continue
 		//}
 		if node.Spec.Unschedulable {
-			return nil, fmt.Errorf("node %s is unschedulable", node.Name)
+			return nil, fmt.Errorf("node %s: unschedulable", node.Name)
 		}
 		var readyConditionExists bool
 		for _, condition := range node.Status.Conditions {
-			if condition.Type == corev1.NodeReady {
+			switch condition.Type {
+			case corev1.NodeReady:
 				readyConditionExists = true
 				if condition.Status != corev1.ConditionTrue {
-					return nil, fmt.Errorf("node %s is not ready", node.Name)
+					return nil, fmt.Errorf("node %s: not ready", node.Name)
+				}
+			case corev1.NodeMemoryPressure, corev1.NodeDiskPressure,
+				corev1.NodePIDPressure, corev1.NodeNetworkUnavailable:
+				if condition.Status == corev1.ConditionTrue {
+					return nil, fmt.Errorf("node %s: %s", node.Name, condition.Type)
 				}
 			}
 		}
 		if !readyConditionExists {
-			return nil, fmt.Errorf("node %s's condition is unknown", node.Name)
+			return nil, fmt.Errorf("node %s: condition unknown", node.Name)
 		}
 	}
 
@@ -223,7 +224,35 @@ func (i *healthCheck) Execute(ctx context.Context, p any) (res any, err error) {
 		}
 	}
 
-	klog.Info("health checks passed for upgrade")
+	// if any user is in the progress of activation
+	// upgrade cannot start
+	dynamicClient, err := utils.GetDynamicClient()
+	if err != nil {
+		err = fmt.Errorf("failed to get dynamic client: %v", err)
+		klog.Error(err.Error())
+		return nil, err
+	}
+
+	users, err := utils.ListUsers(ctx, dynamicClient)
+	if err != nil {
+		err = fmt.Errorf("failed to list users: %v", err)
+		klog.Error(err.Error())
+		return nil, err
+	}
+
+	var activatingUsers []string
+	for _, user := range users {
+		status, ok := user.GetAnnotations()["bytetrade.io/wizard-status"]
+		if !ok || slices.Contains([]string{"", "wait_activate_vault", "completed"}, status) {
+			continue
+		}
+		activatingUsers = append(activatingUsers, user.GetName())
+	}
+	if len(activatingUsers) > 0 {
+		return nil, fmt.Errorf("waiting for user to finish activation: %s", strings.Join(activatingUsers, ", "))
+	}
+
+	klog.Info("pre checks passed for upgrade")
 
 	return newExecutionRes(true, nil), nil
 }
@@ -271,14 +300,9 @@ func (i *downloadSpaceCheck) Execute(ctx context.Context, p any) (res any, err e
 		return nil, fmt.Errorf("failed to check existence of file %s: %v", path, err)
 	}
 	klog.Infof("Required space for download: %s", humanize.Bytes(requiredSpace))
-	availableSpace, err := utils.GetDiskAvailableSpace(commands.TERMINUS_BASE_DIR)
-	if err != nil {
-		return nil, fmt.Errorf("error checking disk space: %s", err)
-	}
-	klog.Infof("Available space of %s: %s", commands.TERMINUS_BASE_DIR, humanize.Bytes(availableSpace))
-	if availableSpace < requiredSpace {
-		return nil, fmt.Errorf("insufficient disk space in: %s, required: %s, available: %s",
-			commands.TERMINUS_BASE_DIR, humanize.Bytes(requiredSpace), humanize.Bytes(availableSpace))
+
+	if err := tryToUseDiskSpace(commands.TERMINUS_BASE_DIR, requiredSpace); err != nil {
+		return nil, err
 	}
 
 	klog.Info("Space check passed for download")

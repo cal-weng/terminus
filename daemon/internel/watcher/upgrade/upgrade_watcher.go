@@ -86,7 +86,7 @@ func (w *upgradeWatcher) Watch(ctx context.Context) {
 	currentVersion, err := semver.NewVersion(*currentVersionStr)
 	if err != nil || currentVersion.LessThan(&w.target.Version) {
 		state.CurrentState.UpgradingTarget = w.target.Version.Original()
-	} else {
+	} else if !w.isUpgrading() {
 		w.target = nil
 		_, err = upgrade.NewRemoveUpgradeTarget().Execute(ctx, nil)
 		if err != nil {
@@ -200,10 +200,10 @@ var downloadPhases = []upgradePhase{
 
 var upgradePhases = []upgradePhase{
 	{upgrade.NewVersionCompatibilityCheck, 0, 5},
-	{upgrade.NewHealthCheck, 5, 5},
+	{upgrade.NewPreCheck, 5, 5},
 	{upgrade.NewInstallCLI, 10, 10},
-	{upgrade.NewImportImages, 20, 30},
-	{upgrade.NewInstallOlaresd, 50, 10},
+	{upgrade.NewInstallOlaresd, 20, 10},
+	{upgrade.NewImportImages, 30, 30},
 	{upgrade.NewUpgrade, 60, 35},
 	{upgrade.NewRemoveTarget, 95, 5},
 }
@@ -227,9 +227,6 @@ func (w *upgradeWatcher) doUpgrade(ctx context.Context) (err error) {
 	}
 
 	klog.Info("download already completed, skipping download phases")
-	state.CurrentState.UpgradingDownloadState = state.Completed
-	state.CurrentState.UpgradingDownloadProgress = "100%"
-	state.CurrentState.UpgradingDownloadProgressNum = 100
 
 	if target.DownloadOnly {
 		state.CurrentState.UpgradingState = "WaitingForUserConfirm"
@@ -253,6 +250,8 @@ func doDownloadPhases(ctx context.Context, target state.UpgradeTarget) (err erro
 			klog.Errorf("download phases failed: %v", err)
 		} else {
 			state.CurrentState.UpgradingDownloadState = state.Completed
+			state.CurrentState.UpgradingDownloadProgress = "100%"
+			state.CurrentState.UpgradingDownloadProgressNum = 100
 			state.CurrentState.UpgradingDownloadError = ""
 			klog.Info("download phases completed successfully")
 		}
