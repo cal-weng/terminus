@@ -35,4 +35,4 @@ nvidia-smi
 lspci | grep -i vga | grep -i nvidia
 ```
 
-更多命令请参考 [Olares CLI 参考文档](../../../developer/install/cli)。
+更多命令请参考 [Olares CLI 参考文档](../../../developer/install/cli/olares-cli.md)。

@@ -3,7 +3,7 @@ description: Learn using Terminal in Olares to check Olares component status, ex
 ---
 # Access Terminal
 
-The Terminal module in Control Hub provides one-click root access to the Olares host terminal. This is equivalent to connecting via SSH, but without manually entering your account and password.
+The Terminal module in Control Hub provides one-click root access to the Olares host terminal. This is equivalent to connecting via SSH, but without needing to manually enter your account and password.
 
 ![Terminal](/images/manual/olares/controlhub-terminal.png#bordered)
 
@@ -36,4 +36,4 @@ nvidia-smi
 lspci | grep -i vga | grep -i nvidia
 ```
 
-For more command usages, refer to [Olares CLI doc](../../../developer/install).
+For more command usages, refer to [Olares CLI doc](../../../developer/install/cli/olares-cli.md).
