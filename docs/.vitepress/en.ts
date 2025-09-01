@@ -185,6 +185,10 @@ const side = {
               text: "Manage middleware",
               link: "/manual/olares/controlhub/manage-middleware",
             },
+            {
+              text: "Access Terminal",
+              link: "/manual/olares/controlhub/terminal",
+            },
           ],
         },
         {

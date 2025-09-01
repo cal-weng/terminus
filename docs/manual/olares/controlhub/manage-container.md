@@ -4,7 +4,7 @@ description: Learn how to manage containers and troubleshoot application issues 
 
 # Manage containers
 
-When an application encounters issues such as CrashLoop, slow startup, or sudden resource spikes, container-level inspection is often the most direct way to troubleshoot. The pod detail page in Control Hub aggregates information of all containers within a specific pod, providing events, visual charts, and logs to help you quickly identify and resolve problems.
+When an application encounters issues such as CrashLoopBack, slow startup, or sudden resource spikes, container-level inspection is often the most direct way to troubleshoot. The pod detail page in Control Hub aggregates information of all containers within a specific pod, providing events, visual charts, and logs to help you quickly identify and resolve problems.
 
 
 ## View Pod details

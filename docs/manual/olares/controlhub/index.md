@@ -13,6 +13,8 @@ Use the modular entries in the side navigation bar to access the appropriate man
 
 ## Module overview
 
+Control Hub modules give you clear entry points to monitor workloads, manage resources, and access the terminal for advanced maintenance operations in Olares.
+
 ### Olares
 
 * **Browse**: A three-column workload resource navigator. Use the left column to select the namespace for applications and services, the center to expand workloads and configurations, and the right to view real-time details and monitoring charts.

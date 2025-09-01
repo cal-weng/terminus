@@ -1,6 +1,6 @@
 ---
 outline: [2, 3]
-description: Learn how to use Control Hub to manage Olares workloads and configurations. This guide covers project and namespace concepts, managing different workload types, and monitoring resource usage through detailed dashboards.
+description: Learn how to use Control Hub to manage Olares workloads and configurations. This doc covers project and namespace concepts, managing different workload types, and monitoring resource usage through detailed dashboards.
 ---
 
 # Manage workloads 
@@ -13,7 +13,7 @@ Olares members can only access their own namespaces, while Olares administrators
 
 ## Projects and namespaces
 
-In Olares' browse view, **Projects** and **Namespaces** combine to provide a two-level organizational structure for resources:
+In Olares' Browse view, **Projects** and **Namespaces** combine to provide a two-level organizational structure for resources:
 
 ![Org](/images/manual/olares/controlhub-org.jpeg#bordered)
 
@@ -59,7 +59,7 @@ To view a specific workload:
 
 ### Edit YAML configuration
 
-In some advanced maintenance scenarios, you may need to directly adjust the number of pod replicas, add environment variables, modify probes, or update storage volume claims. In such cases, you can use the **Edit YAML** function for fine-grained configuration.
+In some advanced maintenance scenarios, you may need to directly adjust the number of pod replicas, add environment variables, modify probes, or update storage volume claims. In such cases, you can use the **Edit YAML** function for fine-grained configurations.
 
 :::warning Proceed with caution
 Directly modifying system resource YAML can affect cluster stability and performance. Operate with extreme caution and ensure you have a backup or are guided by a professional.
@@ -90,10 +90,10 @@ You can monitor the cluster resource usage through two views:
 
 | View           | Use case                                                                                                   | Description                                                                                                                                  |
 |----------------|------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
-| **Namespaces** | When you need to horizontally  <br/>comparere source usage across<br/> multiple applications or system<br/> modules. | Summarizes key metrics like CPU, memory,<br/> and traffic for a namespace to quickly locate resource<br/> hotspots and evaluate quota usage. |
+| **Namespaces** | When you need to horizontally  <br/>compare source usage across<br/> multiple applications or system<br/> modules. | Summarizes key metrics like CPU, memory,<br/> and traffic for a namespace to quickly locate resource<br/> hotspots and evaluate quota usage. |
 | **Pods**       | When you need to drill down into<br/> a single pod for troubleshooting or <br/>performance analysis.            | Provides real-time status, resource charts, and event logs <br/>for each pod and its containers, enabling fine-grained maintenance.          |
 
-You can use the **Namespaces view** to first identify "who" is consuming too many resources, and then use the **Pods view** to pinpoint "which specific pod/container" is causing the bottleneck. This helps you monitor and maintain the cluster from a global to a detailed level.
+You can use the **Namespaces view** to first identify "who" is consuming too many resources, and then use the **Pods view** to pinpoint "which specific pod/container" is causing the issue. This helps you monitor and maintain the cluster from a global to a detailed level.
 
 ### Namespaces view
 

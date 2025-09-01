@@ -1,6 +1,6 @@
 ---
 outline: [2,3]
-description: Learn how to view and manage resource configurations in Olares Control Hub, including namespaces, secrets, configmaps, services, storage, network policies, jobs, and CRDs.
+description: Learn how to view and manage resource configurations in Control Hub, including namespaces, secrets, configmaps, services, storage, network policies, jobs, and CRDs.
 ---
 
 # Manage resource configurations
@@ -76,7 +76,7 @@ Click the <i class="material-symbols-outlined">edit_square</i> button in the top
 
 Services expose network applications running on a single or a group of Pods as network services. They distribute traffic based on defined Selectors.
 
-A Selector uses Labels to filter and select Pods. Essentially, a Service acts as a virtual IP (VIP) that directs traffic to a single Pod or a group of Pods.
+A Selector uses Labels to filter Pods. Essentially, a Service acts as a virtual IP (VIP) that directs traffic to a single Pod or a group of Pods.
 
 To view Services:
 
@@ -101,7 +101,7 @@ Click the <i class="material-symbols-outlined">edit_square</i> buttons in the to
 
 ## Resources view
 
-Beyond namespace-specific entries, you can also view resource configurations by type through the **Resources** section. This section aggregates cluster resources by category, providing cross-namespace comparison and cluster-level troubleshooting. Supported types include:
+Beyond namespace-specific entries, you can also view resource configurations by type in the **Resources** section. This section aggregates cluster resources by category, providing cross-namespace comparison and cluster-level troubleshooting. Supported types include:
 
 | Resource type   | Description                                                                     | Common use cases                                        |
 |-----------------|---------------------------------------------------------------------------------|---------------------------------------------------------|
@@ -121,9 +121,9 @@ PVC details include:
 - **Status**: The PVC status, including Bound, Lost, and Pending.
 - **Access mode**: Common modes are ReadWriteOnce (RWO), ReadOnlyMany (ROX), and ReadWriteMany (RWX) 
 - **Mount status**: Whether the volume is mounted to a pod.
-- **Creation time**: The time the PVC was created.
+- **Creation time**: The time when the PVC was created.
 
-Click the <i class="material-symbols-outlined">more_vert</i> icon on the right side of a PVC entry to perform these actions
+Click the <i class="material-symbols-outlined">more_vert</i> icon on the right side of a PVC entry to perform these actions:
 - **Edit Info**: Modify the PVC's metadata, such as its name or labels.
 - **Edit YAML**: Edit the PVC's configuration in the YAML editor.
 
@@ -137,12 +137,12 @@ Navigate to **Resources** > **Network** in the left sidebar to access the networ
 
 ![Network](/images/manual/olares/controlhub-network.png#bordered)
 
-- Ingress rules: Only allow traffic to enter from Pods within the same namespace that match the specified conditions in the label-matching rules.
+- **Ingress rules**: Only allow traffic to enter from Pods within the same namespace that match the specified conditions in the label-matching rules.
 
   - Within a single rule: All label conditions use `AND` logic and must be met.
   - Between rules: Multiple rules use `OR` logic, and traffic is allowed if it satisfies any one of the rules.
 
-- Egress rules: The logic is similar to ingress rules; used to control which traffic is allowed to leave the namespace.
+- **Egress rules**: The logic is similar to ingress rules; used to control which traffic is allowed to leave the namespace.
 
 Click the <i class="material-symbols-outlined">visibility</i> button in the top-right corner to view the YAML definition of the policy.
 

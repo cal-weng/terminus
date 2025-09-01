@@ -187,7 +187,11 @@ const side = {
             {
               "text": "管理中间件",
               "link": "/zh/manual/olares/controlhub/manage-middleware"
-            }
+            },
+            {
+              text: "访问终端",
+              link: "/zh/manual/olares/controlhub/terminal",
+            },
           ],
         },
         {
