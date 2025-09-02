@@ -30,7 +30,7 @@ To view the containers in a Pod:
    You cannot directly edit pod YAML from this view. YAML configurations are managed by Olares via workload templates and webhooks.
    :::
 
-## View problem container status
+## View container status
 
 For each container listed within a pod, you can:
 
@@ -41,7 +41,7 @@ For each container listed within a pod, you can:
 
 ![container detail](/images/how-to/olares/controlhub/pods/02.jpg#bordered)
 
-## Export container logs
+## Export container logs for troubleshooting
 
 Exporting container logs, along with **Events** and resource charts, helps quickly identify issues such as CrashLoopBack, probe failures, or OOM (Out of Memory) errors.
 
