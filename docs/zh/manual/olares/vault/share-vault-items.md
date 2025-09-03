@@ -27,6 +27,8 @@ description: 在 Olares 中安全共享 Vault 项目。了解团队角色权限�
 
 共享 Vault 仅可由所有者创建。
 
+![创建 team vault](/images/zh/manual/olares/create-team-vault.png#bordered)
+
 1.  导航到**团队** > **Vaults** 页面。
 2.  点击右上角的 <i class="material-symbols-outlined">add</i> 按钮，并输入 Vault 名称。
 3.  点击**保存**。
