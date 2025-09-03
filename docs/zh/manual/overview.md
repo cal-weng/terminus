@@ -8,7 +8,7 @@ Olares 是一款开源个人云操作系统，旨在让你能够轻松在本地�
 
 :::info 开源与商业模式
 Olares 的模式类似于 **Android**：
-- **Olares OS**（软件层）完全 **开源**，保证透明性、社区共建与可扩展性，详见 [GitHub](https://github.com/beclab/Olares) 页面。
+- **Olares OS**（软件层）完全**开源**，保证透明性、社区共建与可扩展性，详见 [GitHub](https://github.com/beclab/Olares) 页面。
 - **硬件**（运行 Olares 的设备）可授权制造商生产与销售，通过硬件产品和生态合作实现可持续发展。 
 :::
 
