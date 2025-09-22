@@ -55,7 +55,7 @@ Adjust video encoding quality to balance file size, CPU consumption, and video q
 | **H.264 Encoding CRF** | Sets the CRF for H.264 encoding. The value ranges from 0-51; <br/>a lower value means higher quality but larger file size.                        |
 
 ::: tip
-CRF is the default quality setting for H.264 and H.265 encoders. A reasonable range is typically between 18 and 28. We recommend using the default values for both as a initial reference.
+CRF is the default quality setting for H.264 and H.265 encoders. A reasonable range is typically between 18 and 28. We recommend using the default values for both as an initial reference.
 :::
 
 ## Other
