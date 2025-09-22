@@ -26,7 +26,7 @@ Olares 通过 **Olares ID** 与 **LarePass 移动应用**提供安全且流畅�
 ## 通过 ISO 安装后激活
 
 如果你通过 ISO 在 PVE 上安装 Olares，或使用预装了 ISO 的 Olares 硬件，请按以下步骤激活：
-![ISO Activate](/images/manual/larepass/iso-activate.png#bordered)
+![ISO 激活](/images/manual/larepass/iso-activate.png#bordered)
 
 
 1. 打开 LarePass 应用。
@@ -34,7 +34,7 @@ Olares 通过 **Olares ID** 与 **LarePass 移动应用**提供安全且流畅�
 3. 点击**立即安装**，完成剩余安装过程。
 4. 点击**立即激活**以激活设备并初始化系统。
 5. 按提示设置 Olares 登录密码。
-   ![ISO Activate](/images/manual/larepass/iso-activate-2.png#bordered)
+   ![ISO 激活-2](/images/manual/larepass/iso-activate-2.png#bordered)
 
 完成后，你即可通过个人 URL 和凭证访问 Olares。
 
