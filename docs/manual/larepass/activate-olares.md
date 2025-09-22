@@ -36,7 +36,7 @@ If you installed Olares via ISO on PVE or are using an Olares hardware device wi
 
 3. Tap **Install now** to finish the installation process.
 
-4. Tap **Activate now** to activate Olares and initialize.
+4. Tap **Activate now** to activate Olares and complete initialization.
 
 5. Follow the prompt to set the login password for Olares.
 

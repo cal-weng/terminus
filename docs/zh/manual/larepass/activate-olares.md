@@ -32,14 +32,14 @@ Olares 通过 **Olares ID** 与 **LarePass 移动应用**提供安全且流畅�
 1. 打开 LarePass 应用。
 2. 点击**发现附近的 Olares**，应用将显示你的 Olares 设备。
 3. 点击**立即安装**，完成剩余安装过程。
-4. 点击**立即激活**以激活并初始化系统。
+4. 点击**立即激活**以激活设备并初始化系统。
 5. 按提示设置 Olares 登录密码。
    ![ISO Activate](/images/manual/larepass/iso-activate-2.png#bordered)
 
 完成后，你即可通过个人 URL 和凭证访问 Olares。
 
 :::tip 无法发现设备？
-如果手机无法连接到 Olares 的现有网络，LarePass 将无法发现待激活设备。此时，可通过[蓝牙配网](manage-olares.md#蓝牙配网)功能将 Olares 连接至手机相同的 Wi-Fi 网络后再重复此激活流程。
+如果手机无法连接到 Olares 的现有网络，LarePass 将无法发现待激活设备。此时，可通过[蓝牙配网](manage-olares.md#蓝牙配网)功能，将 Olares 连接至手机所在 Wi-Fi 网络，再重复此激活流程。
 :::
 
 ## 使用同一 Olares ID 重新激活
