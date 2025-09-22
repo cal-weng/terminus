@@ -30,7 +30,7 @@ If you installed Olares via ISO on PVE or are using an Olares hardware device wi
 
 ![ISO Activate](/images/manual/larepass/iso-activate.png#bordered)
 
-1. Open the LarePass app.
+1. Open LarePass app.
 
 2. Tap **Discover nearby Olares**. Your Olares device should appear.
 
