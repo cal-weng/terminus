@@ -56,7 +56,7 @@ Olares **应用市场**提供多种方式发现和浏览应用：
 2. 在**市场来源**下，点击**添加源**以添加新的应用源。当前 Olares 官方源包括：
    - 国际源： https://appstore-server-prod.bttcdn.com   
    - 国内源：https://appstore-china-server-prod.api.jointerminus.cn
-3. 按需求填写源名称，URL，以及描述后，点击**确认**完成添加。 
+3. 按要求填写源标题、URL、以及描述后，点击**确认**完成添加。 
 4. 在源列表中，选择您希望使用的源以将其激活。等待大约 10 分钟，商店页面就会更新到新的源。
 
 ::: tip 注意
