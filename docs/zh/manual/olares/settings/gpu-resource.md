@@ -16,7 +16,8 @@ Olares 为你提供了强大、灵活的显卡管理功能，让你充分释放 
 :::tip 支持的显卡
 Olares 仅支持 **NVIDIA 显卡**，且要求架构为 **Turing 或更新**（Turing、Ampere、Ada Lovelace、Blackwell）。
 - 快速判断：消费级显卡支持 GTX/RTX **16 系列及以上**。
-- 其他型号：可运行 `lspci | grep -i nvidia` 查询架构信息，并对照 [兼容显卡表](https://github.com/NVIDIA/open-gpu-kernel-modules?tab=readme-ov-file#compatible-gpus)。
+- 其他型号：对照 [兼容显卡表](https://github.com/NVIDIA/open-gpu-kernel-modules?tab=readme-ov-file#compatible-gpus)。
+- 型号未知：可运行 `lspci | grep -i nvidia` 查询显卡架构代码。 
 :::
 
 :::warning 性能提醒

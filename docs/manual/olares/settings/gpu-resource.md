@@ -15,7 +15,9 @@ This guide helps you understand and configure GPU allocation modes to maximize h
 Olares supports **only Nvidia GPUs** of **Turing architecture or later** (Turing, Ampere, Ada Lovelace, and Blackwell). 
 
 - Quick check: GTX/RTX **16 series and newer** consumer cards are supported.
-- For other models, run `lspci | grep -i nvidia` to get the architecture information and cross-check with the [compatible GPU table](https://github.com/NVIDIA/open-gpu-kernel-modules?tab=readme-ov-file#compatible-gpus).
+- For other models, cross-check with the [compatible GPU table](https://github.com/NVIDIA/open-gpu-kernel-modules?tab=readme-ov-file#compatible-gpus).
+- Other models: Cross-check with the [compatible GPU table](https://github.com/NVIDIA/open-gpu-kernel-modules?tab=readme-ov-file#compatible-gpus).
+- Unknown model: Run `lspci | grep -i nvidia` to query the GPU architecture code and determine compatibility.  
 :::
 
 :::warning AI Performance
