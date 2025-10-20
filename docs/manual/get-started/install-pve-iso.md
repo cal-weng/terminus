@@ -19,7 +19,7 @@ Make sure your device meets the following requirements.
 - Supported Systems: PVE 8.2.2
 
 ## Download Olares ISO image
-Click [here](https://cdn.olares.com/olares-latest-amd64-com.iso) to download the official Olares ISO image.
+Click [here](https://cdn.olares.com/olares-latest-amd64.iso) to download the official Olares ISO image.
 
 ## Configure VM in PVE
 
