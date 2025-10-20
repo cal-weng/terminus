@@ -15,9 +15,9 @@ Olares 支持多平台、多部署方式。请根据你的使用场景选择最�
 
 ### 生产环境推荐方式
 
-推荐在 **Linux（Ubuntu 或 Debian）** 系统上运行 Olares，以获得最佳性能和稳定性。
+推荐在 **Linux** (Ubuntu 或 Debian) 系统上运行 Olares，以获得最佳性能和稳定性。
 
-- [**ISO 镜像**](install-linux-iso.md) —  通过官方 ISO 镜像在物理机上全新安装 Olares，自动配置宿主（Linux）<br/>环境、容器运行时、驱动及核心依赖。
+- [**ISO 镜像**](install-linux-iso.md) —  通过官方 ISO 镜像在物理机上全新安装 Olares，自动配置宿主机环境、容器运行时、驱动及核心依赖。
 - [**一行命令**](install-linux-script.md) —  在现有 Linux 系统中快速安装 Olares。
 
 :::tip 推荐
