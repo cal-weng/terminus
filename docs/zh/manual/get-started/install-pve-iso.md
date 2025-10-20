@@ -25,7 +25,7 @@ description: 在 PVE 虚拟化平台上使用 ISO 镜像安装配置 Olares 的�
 - 支持的系统版本：PVE 8.2.2
 
 ::: tip 激活遇到问题？
-当前 ISO 镜像使用了国际版网络配置（使用 `olares.com` 域名）。如遇激活问题，请暂时切换至[一键安装脚本](install-linux-script.md)方式安装激活。
+当前 ISO 镜像使用了国际版网络配置（使用 `olares.com` 域名）。如遇激活问题，请暂时切换至[一键安装脚本](install-pve-script.md)方式安装激活。
 :::
 
 ## 下载 Olares ISO 镜像
