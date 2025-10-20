@@ -45,15 +45,3 @@ These methods are suitable for **development**, **testing**, or **lightweight en
 
 #### Raspberry Pi (ARM)
 - [**One-line script**](install-raspberry-pi.md): Install Olares on ARM-based Raspberry Pi devices.
-
-
-
-
-
-
-
-
- #### Raspberry Pi (ARM)
-
-- [**Using one-line script**](install-raspberry-pi.md): Installs Olares on ARM-based Raspberry Pi boards. 
-
