@@ -30,24 +30,28 @@ Olares supports three GPU allocation modes. Choosing the right mode helps optimi
 
 ### Time Slicing 
 
-In this mode, the GPU's processing power is shared among multiple applications.  
+In this mode, a GPU can be bound to multiple applications and rotates execution in time slices.  
 
-* Acts as a default resource pool. Any application not explicitly assigned to a specific GPU will automatically use a time-slicing GPU if available.
-
-* Suitable for General-purpose use and running multiple lightweight applications.
+* At any instant, only one application uses all available compute and VRAM of the GPU.
+* Other apps enter a wait queue; their CUDA and VRAM content will be swapped to the system memory.
 
 ### App Exclusive
 
-In this mode, the entire GPU processing power and memory is dedicated to a single application. 
+In this mode, the entire GPU is allocated to a single application.
 
-* Best for intensive, performance-critical applications like AI-generated imagery or high-performance gaming servers.
-* Large memory demands may limit availability for other tasks.
+* During execution, the app can use all compute and VRAM of the bound GPU.
+* No cross-app contention or scheduling overhead so that best performance is guaranteed.
 
 ### Memory Slicing
-In this mode, GPU memory (VRAM) is partitioned into fixed, dedicated amounts for specific applications.
+In this mode, VRAM of the GPU is partitioned into fixed quotas for multiple designated applications.
 
-* Ideal for running multiple GPU-intensive applications simultaneously, each with guaranteed VRAM allocation.
-* Prevents memory conflicts between applications running on the same GPU.
+* Users need to manually set a quota for each app.
+* The sum of quotas must not exceed physical VRAM of the bound GPU (Oversubscription is not supported).
+* Apps with quota assigned can run concurrently, each limited to its own quota.
+
+:::tip Multi-GPU aggregation
+ You can bind multiple GPUs to one application within the same cluster to gain bigger VRAM. In such scenarios, only **App Exclusive** or **Memory Slicing** modes are supported.
+:::
 
 ## View GPU status
 
@@ -56,8 +60,10 @@ To view your GPU status:
 1. Navigate to **Settings** > **GPU**. The GPU list shows each GPU’s model, associated node, total VRAM, and current GPU mode.
 2. Click on a specific GPU to visit its details.
 
+![GPU overview](/images/manual/olares/gpu-overview.png#bordered)
+
 ::: tip Note
-If your Olares only has one GPU, navigating to the GPU section will take you directly to the GPU details page. If you have multiple GPUs, you will see a list first.
+If your Olares only has one GPU, navigating to the GPU section will take you directly to the GPU details page.
 :::
 
 ## Configure GPU mode
@@ -80,16 +86,12 @@ No manual pinning is required if you only have one GPU in your cluster.
   3. Click **Confirm**.
     ![App exclusive](/images/manual/olares/gpu-app-exclusive.png#bordered)
 
-  * **Memory Slicing**
-      1. Select this mode from the dropdown.
-      2. In the **Allocate VRAM** section, click **Add an application**. 
-      3. Select your target application and assign it a specific amount of VRAM (in GB).
-      4. Repeat for other applications and click **Confirm**.
-         ![VRAM slicing](/images/manual/olares/gpu-memory-slicing.png#bordered)
-     
-    ::: tip Note
-    You can't assign a VRAM that's larger than the total VRAM.
-    :::
+* **Memory Slicing**
+    1. Select this mode from the dropdown.
+    2. In the **Allocate VRAM** section, click **Add an application**. 
+    3. Select your target application and assign it a specific amount of VRAM in GB.
+    4. Repeat for other applications and click **Confirm**.
+       ![VRAM slicing](/images/manual/olares/gpu-memory-slicing.png#bordered)
 
 ## Learn more
 - [Monitor GPU usage in Olares](../resources-usage.md)
