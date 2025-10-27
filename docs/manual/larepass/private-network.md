@@ -30,18 +30,18 @@ Starting with Olares 1.12, you no longer need a separate `.local` address (e.g.,
 ## Enable VPN on LarePass
 
 :::tip
-For different LarePass download options, visit [the official page](https://olares.com/larepass).
+For different LarePass download options, visit [the official page](https://larepass.olares.com).
 :::
 
 ![VPN](/images/manual/larepass/vpn.jpg)
 
 ### On LarePass mobile client
-1. Open LarePass, go to **Settings** > **Account**.
-2. Turn on the VPN switch.
+1. Open LarePass, and go to **Settings**.
+2. In the **My Olares** card, toggle on the VPN switch.
 
 ### On LarePass desktop client
 1. Open LarePass, click on the avatar area in the top left corner of the main interface.
-2. Turn on the switch for **VPN connection** in the pop-up panel.
+2. Toggle on the switch for **VPN connection** in the pop-up panel.
 
 Devices with activated VPN will use the VPN connection to access Olares, whether through the LarePass client or a browser.
 

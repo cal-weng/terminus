@@ -7,7 +7,6 @@ import (
 
 	kubekeyapiv1alpha2 "github.com/beclab/Olares/cli/apis/kubekey/v1alpha2"
 
-	"github.com/beclab/Olares/cli/pkg/addons"
 	"github.com/beclab/Olares/cli/pkg/bootstrap/confirm"
 	"github.com/beclab/Olares/cli/pkg/bootstrap/os"
 	"github.com/beclab/Olares/cli/pkg/bootstrap/precheck"
@@ -39,7 +38,7 @@ func NewDarwinClusterPhase(runtime *common.KubeRuntime, manifestMap manifest.Ins
 		&kubesphere.DeployMiniKubeModule{},
 		&kubesphere.DeployModule{Skip: !runtime.Cluster.KubeSphere.Enabled},
 		&ksplugins.DeployKsPluginsModule{},
-		&ksplugins.DeployRedisModule{},
+		//&ksplugins.DeployRedisModule{},
 		&ksplugins.CreateKubeSphereSecretModule{},
 		&ksplugins.DeployKsCoreConfigModule{}, // ks-core-config
 		&ksplugins.CreateMonitorDashboardModule{},
@@ -94,11 +93,10 @@ func NewK3sCreateClusterPhase(runtime *common.KubeRuntime, manifestMap manifest.
 		&filesystem.ChownModule{},
 		&certs.AutoRenewCertsModule{Skip: !runtime.Cluster.Kubernetes.EnableAutoRenewCerts()},
 		&k3s.SaveKubeConfigModule{},
-		&addons.AddonsModule{}, // relative ks-installer
 		&storage.DeployLocalVolumeModule{Skip: skipLocalStorage},
 		&kubesphere.DeployModule{Skip: !runtime.Cluster.KubeSphere.Enabled}, //
 		&ksplugins.DeployKsPluginsModule{},
-		&ksplugins.DeployRedisModule{},
+		//&ksplugins.DeployRedisModule{},
 		&ksplugins.CreateKubeSphereSecretModule{},
 		&ksplugins.DeployKsCoreConfigModule{}, // ks-core-config
 		&ksplugins.CreateMonitorDashboardModule{},
@@ -157,11 +155,10 @@ func NewCreateClusterPhase(runtime *common.KubeRuntime, manifestMap manifest.Ins
 		&certs.AutoRenewCertsModule{Skip: !runtime.Cluster.Kubernetes.EnableAutoRenewCerts()},
 		&kubernetes.SecurityEnhancementModule{Skip: !runtime.Arg.SecurityEnhancement},
 		&kubernetes.SaveKubeConfigModule{},
-		&addons.AddonsModule{},
 		&storage.DeployLocalVolumeModule{Skip: skipLocalStorage},
 		&kubesphere.DeployModule{Skip: !runtime.Cluster.KubeSphere.Enabled},
 		&ksplugins.DeployKsPluginsModule{},
-		&ksplugins.DeployRedisModule{},
+		//&ksplugins.DeployRedisModule{},
 		&ksplugins.CreateKubeSphereSecretModule{},
 		&ksplugins.DeployKsCoreConfigModule{}, // ! ks-core-config
 		&ksplugins.CreateMonitorDashboardModule{},

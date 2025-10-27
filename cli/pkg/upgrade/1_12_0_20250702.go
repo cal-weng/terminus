@@ -2,17 +2,18 @@ package upgrade
 
 import (
 	"fmt"
+	"os"
+	"strings"
+
 	"github.com/Masterminds/semver/v3"
 	"github.com/beclab/Olares/cli/pkg/common"
 	"github.com/beclab/Olares/cli/pkg/core/connector"
 	"github.com/beclab/Olares/cli/pkg/core/logger"
 	"github.com/beclab/Olares/cli/pkg/core/task"
-	"os"
-	"strings"
 )
 
 type upgrader_1_12_0_20250702 struct {
-	upgraderBase
+	breakingUpgraderBase
 }
 
 func (u upgrader_1_12_0_20250702) Version() *semver.Version {
@@ -91,4 +92,8 @@ func (u *updateSysctlReservedPorts) Execute(runtime connector.Runtime) error {
 	}
 
 	return nil
+}
+
+func init() {
+	registerDailyUpgrader(upgrader_1_12_0_20250702{})
 }

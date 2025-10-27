@@ -10,7 +10,7 @@ function command_exists() {
 if [[ x"$VERSION" == x"" ]]; then
     if [[ "$LOCAL_RELEASE" == "1" ]]; then
         ts=$(date +%Y%m%d%H%M%S)
-        export VERSION="1.12.0-$ts"
+        export VERSION="1.12.2-$ts"
         echo "will build and use a local release of Olares with version: $VERSION"
         echo ""
     else
@@ -20,7 +20,7 @@ fi
 
 if [[ "x${VERSION}" == "x" || "x${VERSION:3}" == "xVERSION__" ]]; then
     echo "error: Olares version is unspecified, please set the VERSION env var and rerun this script."
-    echo "for example: VERSION=1.12.0-20241124 bash $0"
+    echo "for example: VERSION=1.12.2-20241124 bash $0"
     exit 1
 fi
 
@@ -69,14 +69,20 @@ if [ ! -d $BASE_DIR ]; then
     mkdir -p $BASE_DIR
 fi
 
-cdn_url=${DOWNLOAD_CDN_URL}
+cdn_url=${OLARES_SYSTEM_CDN_SERVICE}
 if [ -z ${cdn_url} ]; then
-    cdn_url="https://dc3p1870nn3cj.cloudfront.net"
+    cdn_url="https://cdn.olares.com"
 fi
 
-CLI_FILE="olares-cli-v${VERSION}_linux_${ARCH}.tar.gz"
+RELEASE_ID="#__RELEASE_ID__"
+if [[ $RELEASE_ID == "" || "${RELEASE_ID:3}" == "RELEASE_ID__" ]]; then
+  RELEASE_ID_SUFFIX=""
+else
+  RELEASE_ID_SUFFIX=".$RELEASE_ID"
+fi
+CLI_FILE="olares-cli-v${VERSION}_linux_${ARCH}${RELEASE_ID_SUFFIX}.tar.gz"
 if [[ x"$os_type" == x"Darwin" ]]; then
-    CLI_FILE="olares-cli-v${VERSION}_darwin_${ARCH}.tar.gz"
+    CLI_FILE="olares-cli-v${VERSION}_darwin_${ARCH}${RELEASE_ID_SUFFIX}.tar.gz"
 fi
 
 if [[ "$LOCAL_RELEASE" == "1" ]]; then
@@ -132,7 +138,7 @@ fi
 
 PARAMS="--version $VERSION --base-dir $BASE_DIR"
 KUBE_PARAM="--kube $KUBE_TYPE"
-CDN="--download-cdn-url ${cdn_url}"
+CDN="--cdn-service ${cdn_url}"
 
 if [[ -f $BASE_DIR/.prepared ]]; then
     echo "file $BASE_DIR/.prepared detected, skip preparing phase"
@@ -159,7 +165,10 @@ else
         fi
         echo "downloading installation wizard..."
         echo ""
-        $sh_c "$INSTALL_OLARES_CLI download wizard $PARAMS $KUBE_PARAM $CDN"
+        if [[ ! -z "$RELEASE_ID_SUFFIX" ]]; then
+            DOWNLOAD_WIZARD_RELEASE_ID_PARAM="--release-id $RELEASE_ID"
+        fi
+        $sh_c "$INSTALL_OLARES_CLI download wizard $PARAMS $KUBE_PARAM $CDN $DOWNLOAD_WIZARD_RELEASE_ID_PARAM"
         if [[ $? -ne 0 ]]; then
             echo "error: failed to download installation wizard"
             exit 1

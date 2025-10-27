@@ -22,14 +22,14 @@ spec:
       initContainers:
       - args:
         - -it
-        - authelia-backend.os-framework:9091
+        - authelia-backend.user-system-{{ .Values.bfl.username }}:9091
         image: owncloudci/wait-for:latest
         imagePullPolicy: IfNotPresent
         name: check-auth
 
       containers:
       - name: wizard
-        image: beclab/wizard:v1.3.111
+        image: beclab/wizard:v1.5.11
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80

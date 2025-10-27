@@ -42,7 +42,7 @@ metadata:
   name: helloworld
   title: Hello World
   description: app helloworld
-  icon: https://file.bttcdn.com/appstore/default/defaulticon.webp
+  icon: https://app.cdn.olares.com/appstore/default/defaulticon.webp
   version: 0.0.1
   categories:
   - Utilities
@@ -51,7 +51,7 @@ entrances:
   port: 8080
   title: Hello World
   host: helloworld
-  icon: https://file.bttcdn.com/appstore/default/defaulticon.webp
+  icon: https://app.cdn.olares.com/appstore/default/defaulticon.webp
   authLevel: private
 permission:
   appCache: true
@@ -119,10 +119,10 @@ olaresManifest.type: app
 
 开发者可以使用 1-3 位的版本号来标识该应用遵循的配置版本。以下是有效版本的一些示例：
 ```Yaml
-OlaresManifest.yaml.version: 1
-OlaresManifest.yaml.version: 1.1.0
-OlaresManifest.yaml.version: '2.2'
-OlaresManifest.yaml.version: "3.0.122"
+olaresManifest.version: 1
+olaresManifest.version: 1.1.0
+olaresManifest.version: '2.2'
+olaresManifest.version: "3.0.122"
 ```
 
 ## Metadata
@@ -135,7 +135,7 @@ metadata:
   name: nextcloud
   title: Nextcloud
   description: The productivity platform that keeps you in control
-  icon: https://file.bttcdn.com/appstore/nextcloud/icon.png
+  icon: https://app.cdn.olares.com/appstore/nextcloud/icon.png
   version: 0.0.2
   categories:
   - Utilities
@@ -437,13 +437,13 @@ spec:
   versionName: '10.8.11' 
   ## 此 Chart 包含的应用程序的版本。建议将版本号括在引号中。该值对应于 Chart.yaml 文件中的 appVersion 字段。请注意，它与 version 字段无关。
 
-  featuredImage: https://file.bttcdn.com/appstore/jellyfin/promote_image_1.jpg
+  featuredImage: https://app.cdn.olares.com/appstore/jellyfin/promote_image_1.jpg
   # 当应用在应用市场上推荐时，会显示特色图像。
 
   promoteImage:
-  - https://file.bttcdn.com/appstore/jellyfin/promote_image_1.jpg
-  - https://file.bttcdn.com/appstore/jellyfin/promote_image_2.jpg
-  - https://file.bttcdn.com/appstore/jellyfin/promote_image_3.jpg
+  - https://app.cdn.olares.com/appstore/jellyfin/promote_image_1.jpg
+  - https://app.cdn.olares.com/appstore/jellyfin/promote_image_2.jpg
+  - https://app.cdn.olares.com/appstore/jellyfin/promote_image_3.jpg
   fullDescription: |
     Jellyfin is the volunteer-built media solution that puts you in control of your media. Stream to any device from your own server, with no strings attached. Your media, your server, your way.
   upgradeDescription: |

@@ -10,6 +10,21 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  name: user-system-{{ .Values.bfl.username }}:bytetrade-sys-ops:nonresourceurl
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: nonresourceurl-admin
+subjects:
+- kind: ServiceAccount
+  name: bytetrade-sys-ops
+  namespace: user-system-{{ .Values.bfl.username }}
+
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
   name: user-system-{{ .Values.bfl.username }}:bytetrade-sys-ops
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -20,6 +35,20 @@ subjects:
   name: bytetrade-sys-ops
   namespace: user-system-{{ .Values.bfl.username }}
 
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: user-system-{{ .Values.bfl.username }}:bytetrade-sys-ops:rbac
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: rbac-proxy
+subjects:
+- kind: ServiceAccount
+  name: bytetrade-sys-ops
+  namespace: user-system-{{ .Values.bfl.username }}
 
 ---
 apiVersion: apps/v1
@@ -53,14 +82,14 @@ spec:
       priorityClassName: "system-cluster-critical"
       containers:
       - name: system-server
-        image: beclab/system-server:0.1.24
+        image: beclab/system-server:0.1.32
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
         command:
         - /system-server
         - -v
-        - "4"
+        - "6"
         env:
         - name: MY_NAMESPACE
           valueFrom:
@@ -122,21 +151,6 @@ spec:
           items:
           - key: envoy.yaml
             path: envoy.yaml
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: system-server
-  namespace: user-system-{{ .Values.bfl.username }}
-spec:
-  type: ClusterIP
-  selector:
-    app: systemserver
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
 
 ---
 apiVersion: v1
@@ -228,6 +242,30 @@ data:
                     "@type": type.googleapis.com/envoy.extensions.filters.network.tcp_proxy.v3.TcpProxy
                     stat_prefix: destination
                     cluster: cluster_fakes3_proxy
+        - name: listener_infisical_proxy
+          address:
+            socket_address:
+              address: 0.0.0.0
+              port_value: 8080
+          filter_chains:
+            - filters:
+                - name: envoy.filters.network.tcp_proxy
+                  typed_config:
+                    "@type": type.googleapis.com/envoy.extensions.filters.network.tcp_proxy.v3.TcpProxy
+                    stat_prefix: destination
+                    cluster: cluster_infisical_proxy
+        - name: listener_vault_proxy
+          address:
+            socket_address:
+              address: 0.0.0.0
+              port_value: 3000
+          filter_chains:
+            - filters:
+                - name: envoy.filters.network.tcp_proxy
+                  typed_config:
+                    "@type": type.googleapis.com/envoy.extensions.filters.network.tcp_proxy.v3.TcpProxy
+                    stat_prefix: destination
+                    cluster: cluster_vault_proxy
       clusters:
         - name: cluster_redis_proxy
           connect_timeout: 30s
@@ -320,6 +358,32 @@ data:
                         socket_address:
                           address: tapr-s3-svc.os-platform.svc.cluster.local
                           port_value: 4568  
+        - name: cluster_infisical_proxy
+          connect_timeout: 30s
+          type: LOGICAL_DNS
+          dns_lookup_family: V4_ONLY
+          load_assignment:
+            cluster_name: cluster_infisical_proxy
+            endpoints:
+              - lb_endpoints:
+                  - endpoint:
+                      address:
+                        socket_address:
+                          address: infisical-service.os-protected.svc.cluster.local
+                          port_value: 8080
+        - name: cluster_vault_proxy
+          connect_timeout: 30s
+          type: LOGICAL_DNS
+          dns_lookup_family: V4_ONLY
+          load_assignment:
+            cluster_name: cluster_vault_proxy
+            endpoints:
+              - lb_endpoints:
+                  - endpoint:
+                      address:
+                        socket_address:
+                          address: vault-server.os-framework.svc.cluster.local
+                          port_value: 3000
 kind: ConfigMap
 metadata:
   name: systemserver-proxy-configs

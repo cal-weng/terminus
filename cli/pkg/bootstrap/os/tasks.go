@@ -113,22 +113,27 @@ func (t *UpdateNtpDateTask) Execute(runtime connector.Runtime) error {
 		return err
 	}
 
-	var ntpPkg = " ntpdate "
 	var systemInfo = runtime.GetSystemInfo()
 	if systemInfo.IsUbuntu() && systemInfo.IsUbuntuVersionEqual(connector.Ubuntu24) {
-		ntpPkg += " util-linux-extra "
-	}
-	if _, err := runtime.GetRunner().Cmd(fmt.Sprintf("apt install %s -y", ntpPkg), false, true); err != nil {
-		return err
+		if _, err := runtime.GetRunner().Cmd("apt install util-linux-extra -y", false, true); err != nil {
+			return err
+		}
 	}
 
 	ntpdateCommand, err := util.GetCommand(common.CommandNtpdate)
-	if err != nil {
-		return fmt.Errorf("getntpdate command error: %v", err)
-	}
-
-	if _, err := runtime.GetRunner().Cmd(fmt.Sprintf("%s -b -u pool.ntp.org", ntpdateCommand), false, true); err != nil {
-		return err
+	if err == nil {
+		if _, err := runtime.GetRunner().Cmd(fmt.Sprintf("%s -b -u pool.ntp.org", ntpdateCommand), false, true); err != nil {
+			return err
+		}
+		return nil
+	} else {
+		timectlCommand, err := util.GetCommand(common.CommandTimeCtl)
+		if err != nil {
+			return fmt.Errorf("neither ntpdate or timedatectl is found, unable to update datetime")
+		}
+		if _, err := runtime.GetRunner().Cmd(fmt.Sprintf("%s set-ntp 1", timectlCommand), false, true); err != nil {
+			return err
+		}
 	}
 
 	return nil
@@ -146,7 +151,17 @@ func (t *TimeSyncTask) Execute(runtime connector.Runtime) error {
 	// }
 
 	var hwclockCmd = ""
-	ntpdatePath, _ := util.GetCommand(common.CommandNtpdate)
+	var setNTPCommand string
+	ntpdatePath, err := util.GetCommand(common.CommandNtpdate)
+	if err == nil {
+		setNTPCommand = fmt.Sprintf("%s -b -u pool.ntp.org", ntpdatePath)
+	} else {
+		timectlCommand, err := util.GetCommand(common.CommandTimeCtl)
+		if err != nil {
+			return fmt.Errorf("neither ntpdate or timedatectl is found, unable to update time")
+		}
+		setNTPCommand = fmt.Sprintf("%s set-ntp 1", timectlCommand)
+	}
 	hwclockCommand, err := util.GetCommand(common.CommandHwclock)
 	if err != nil {
 		logger.Debugf("hwclock not found")
@@ -159,8 +174,8 @@ func (t *TimeSyncTask) Execute(runtime connector.Runtime) error {
 	}
 
 	cronContent := fmt.Sprintf(`#!/bin/sh
-%s -b -u pool.ntp.org %s
-exit 0`, ntpdatePath, hwclockCmd)
+%s %s
+exit 0`, setNTPCommand, hwclockCmd)
 
 	// cronContent := fmt.Sprintf(`#!/bin/sh
 	// %s -b -u pool.ntp.org && %s -w
@@ -369,6 +384,35 @@ func (n *NodeExecScript) Execute(runtime connector.Runtime) error {
 		return errors.Wrap(errors.WithStack(err), "Failed to configure operating system")
 	}
 	return nil
+}
+
+type SymLinkSysconf struct {
+	common.KubeAction
+}
+
+func (a *SymLinkSysconf) Execute(runtime connector.Runtime) error {
+	sysconfPath := "/etc/sysctl.conf"
+	sysconfSymLinkPath := "/etc/sysctl.d/99-sysctl.conf"
+	linkExists, err := runtime.GetRunner().FileExist(sysconfSymLinkPath)
+	if err != nil {
+		return fmt.Errorf("failed to check if %s exists", sysconfSymLinkPath)
+	}
+	if linkExists {
+		return nil
+	}
+	sysconfDir := filepath.Dir(sysconfSymLinkPath)
+	dirExists, err := runtime.GetRunner().DirExist(sysconfDir)
+	if err != nil {
+		return fmt.Errorf("failed to check if %s exists", sysconfDir)
+	}
+	if !dirExists {
+		err = runtime.GetRunner().MkDir(sysconfDir)
+		if err != nil {
+			return err
+		}
+	}
+	_, err = runtime.GetRunner().SudoCmd(fmt.Sprintf("ln -s %s %s", sysconfPath, sysconfSymLinkPath), true, false)
+	return err
 }
 
 var (

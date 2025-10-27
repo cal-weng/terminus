@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/beclab/Olares/cli/pkg/web5/crypto/dsa"
@@ -17,52 +18,64 @@ import (
 	"github.com/syndtr/goleveldb/leveldb"
 )
 
-const (
+var (
 	DIDGateURL     = "https://did-gate-v3.bttcdn.com/1.0/name/"
 	DIDGateTimeout = 10 * time.Second
+	DIDCachePath   = "/var/lib/olares"
 )
 
 var (
-	db *leveldb.DB
+	db     *leveldb.DB
+	dbOnce sync.Once
 )
 
-func init() {
+func getDB() *leveldb.DB {
+	dbOnce.Do(func() {
+		initDB()
+	})
+	return db
+}
+
+func initDB() {
 	var (
 		err  error
 		info os.FileInfo
 	)
-	info, err = os.Stat("/var/lib/olares")
-	if os.IsNotExist(err) {
-		// Create the directory if it doesn't exist
-		if err := os.MkdirAll("/var/lib/olares", 0755); err != nil {
-			panic(fmt.Sprintf("failed to create directory: %v", err))
+	info, err = os.Stat(DIDCachePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			// Create the directory if it doesn't exist
+			if err := os.MkdirAll(DIDCachePath, 0755); err != nil {
+				panic(fmt.Sprintf("failed to create directory: %v", err))
+			}
+		} else {
+			panic(fmt.Sprintf("failed to check directory: %v", err))
 		}
 	}
 
-	if err != nil {
-		panic(fmt.Sprintf("failed to check directory: %v", err))
-	}
-
-	if info.IsDir() == false {
-		err = os.Remove("/var/lib/olares")
+	if info == nil || !info.IsDir() {
+		err = os.RemoveAll(DIDCachePath)
 		if err != nil {
 			panic(fmt.Sprintf("failed to remove file: %v", err))
 		}
 
-		err = os.MkdirAll("/var/lib/olares", 0755)
+		err = os.MkdirAll(DIDCachePath, 0755)
 		if err != nil {
 			panic(fmt.Sprintf("failed to create directory: %v", err))
 		}
 	}
 
-	db, err = leveldb.OpenFile("/var/lib/olares/did_cache.db", nil)
+	dbPath := DIDCachePath + "/did_cache.db"
+	db, err = leveldb.OpenFile(dbPath, nil)
 	if err != nil {
 		// If file exists but can't be opened, try to remove it
-		if os.IsExist(err) {
-			os.Remove("did_cache.db")
+		err := os.RemoveAll(dbPath)
+		if err != nil {
+			panic(fmt.Sprintf("failed to remove existing db: %v", err))
 		}
+
 		// Try to create a new database
-		db, err = leveldb.OpenFile("did_cache.db", nil)
+		db, err = leveldb.OpenFile(dbPath, nil)
 		if err != nil {
 			panic(fmt.Sprintf("failed to create leveldb: %v", err))
 		}
@@ -77,10 +90,10 @@ type CheckJWSResult struct {
 }
 
 // resolveDID resolves a DID either from cache or from the DID gate
-func resolveDID(olares_id string) (*didcore.ResolutionResult, error) {
+func ResolveOlaresName(olares_id string) (*didcore.ResolutionResult, error) {
 	name := strings.Replace(olares_id, "@", ".", -1)
 	// Try to get from cache first
-	cached, err := db.Get([]byte(name), nil)
+	cached, err := getDB().Get([]byte(name), nil)
 	if err == nil {
 		var result didcore.ResolutionResult
 		if err := json.Unmarshal(cached, &result); err == nil {
@@ -113,7 +126,7 @@ func resolveDID(olares_id string) (*didcore.ResolutionResult, error) {
 	}
 
 	// Cache the result
-	if err := db.Put([]byte(name), body, nil); err != nil {
+	if err := getDB().Put([]byte(name), body, nil); err != nil {
 		// Log error but don't fail
 		fmt.Printf("failed to cache DID document: %v\n", err)
 	}
@@ -184,18 +197,18 @@ func CheckJWS(jws string, duration int64) (*CheckJWSResult, error) {
 	}
 
 	// Resolve DID
-	resolutionResult, err := resolveDID(name)
+	resolutionResult, err := ResolveOlaresName(name)
 	if err != nil {
 		return nil, fmt.Errorf("failed to resolve DID: %w", err)
 	}
 
 	// Verify DID matches
 	if resolutionResult.Document.ID != kid {
-        	sid := resolutionResult.Document.ID + resolutionResult.Document.VerificationMethod[0].ID
-        	if sid != kid {
-            		return nil, fmt.Errorf("DID does not match: expected %s, got %  s", sid, kid)
-        	}
-    	}
+		sid := resolutionResult.Document.ID + resolutionResult.Document.VerificationMethod[0].ID
+		if sid != kid {
+			return nil, fmt.Errorf("DID does not match: expected %s, got %  s", sid, kid)
+		}
+	}
 	// Get verification method
 	if len(resolutionResult.Document.VerificationMethod) == 0 || resolutionResult.Document.VerificationMethod[0].PublicKeyJwk == nil {
 		return nil, fmt.Errorf("invalid DID document: missing verification method")

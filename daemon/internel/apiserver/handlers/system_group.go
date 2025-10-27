@@ -20,6 +20,9 @@ func init() {
 	system.Get("/mounted-hdd-incluster", handlers.RequireLocal(handlers.GetMountedHddInCluster))
 	system.Get("/mounted-smb-incluster", handlers.RequireLocal(handlers.GetMountedSmbInCluster))
 	system.Get("/mounted-path-incluster", handlers.RequireLocal(handlers.GetMountedPathInCluster))
+	system.Get("/1.0/name/:olaresName", handlers.RequireLocal(handlers.ResolveOlaresName))
+	system.Post("/checkjws", handlers.RequireLocal(handlers.CheckJWS))
+	system.Get("/check-ssh-password", handlers.RequireLocal(handlers.CheckDefaultSSHPwd))
 
 	klog.V(8).Info("system handlers initialized")
 }

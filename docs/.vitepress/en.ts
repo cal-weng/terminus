@@ -4,27 +4,21 @@ const side = {
   "/manual/": [
     {
       text: "What is Olares",
-      link: "/manual/docs-home",
+      link: "/manual/overview",
       items: [
-       // A{ text: "Why Olares", link: "/manual/why-olares" },
-        //{ text: "Feature comparison", link: "/manual/feature-overview" },
-        { text: "Olares architecture", link: "/manual/system-architecture" },
         { text: "Compare Olares and NAS", link: "/manual/olares-vs-nas" },
-        {
-          text: "Help and support",
-          collapsed: true,
-          items: [
-            { text: "FAQs", link: "/manual/help/faqs" },
-            {
-              text: "Request support",
-              link: "/manual/help/request-technical-support",
-            },
+        { text: "Help and support", link: "/manual/help/request-technical-support"}
+          //  collapsed: true,
+          //   items: [
+            // { text: "FAQs", link: "/manual/help/faqs" },
+            //    {
+            //     text: "Request support",
+          //     link: "/manual/help/request-technical-support",
+          //  },
             //{
             //  text: "Troubleshooting Guide",
             //  link: "/manual/help/troubleshooting-guide",
             // },
-          ],
-        },
       ],
     },
     {
@@ -40,6 +34,75 @@ const side = {
         {
           text: "Install Olares",
           link: "/manual/get-started/install-olares",
+          collapsed: true,
+          items: [
+            {
+              text: "Linux",
+              collapsed: true,
+              items: [
+                {
+                  text: "Using ISO image (Recommended)",
+                  link: "/manual/get-started/install-linux-iso",
+                },
+                {
+                  text: "Using script",
+                  link: "/manual/get-started/install-linux-script",
+                },
+                {
+                  text: "Using Docker Compose",
+                  link: "/manual/get-started/install-linux-docker",
+                },
+              ],
+            },
+            {
+              text: "macOS",
+              collapsed: true,
+              items: [
+                {
+                  text: "Using script",
+                  link: "/manual/get-started/install-mac-script",
+                },
+                {
+                  text: "Using Docker image",
+                  link: "/manual/get-started/install-mac-docker",
+                },
+              ],
+            },
+            {
+              text: "Windows (WSL 2)",
+              collapsed: true,
+              items: [
+                {
+                  text: "Using script",
+                  link: "/manual/get-started/install-windows-script",
+                },
+                {
+                  text: "Using Docker image",
+                  link: "/manual/get-started/install-windows-docker",
+                },
+              ],
+            },
+            {
+              text: "PVE",
+              collapsed: true,
+              items: [
+                {
+                  text: "Using script",
+                  link: "/manual/get-started/install-pve-script",
+                },
+                {
+                  text: "Using ISO image",
+                  link: "/manual/get-started/install-pve-iso",
+                },
+                { text: "LXC on PVE", link: "/manual/get-started/install-lxc" },
+              ],
+            },
+
+            {
+              text: "Raspberry Pi",
+              link: "/manual/get-started/install-raspberry-pi",
+            },
+          ],
         },
         {
           text: "Back up mnemonics",
@@ -74,14 +137,13 @@ const side = {
             {text: "Manage Olares", link:"/manual/larepass/manage-olares"},
           ],
         },
-        {
-          text: "Manage files",
-          collapsed: true,
-          items: [
-            {text: "Common file operations", link:"/manual/larepass/manage-files"},
-            {text: "Sync and share", link:"/manual/larepass/sync-share"}
-          ]
-        },
+        {text: "Manage files", link:"/manual/larepass/manage-files"},
+         // collapsed: true,
+          //items: [
+          //  {text: "Common file operations", link:"/manual/larepass/manage-files"},
+           // {text: "Sync and share", link:"/manual/larepass/sync-share"}
+         // ]
+       // },
         {
           text: "Manage passwords",
           collapsed: true,
@@ -112,17 +174,18 @@ const side = {
               text: "Basic file operations",
               link: "/manual/olares/files/add-edit-download",
             },
-            {
-              text: "Sync and share",
-              link: "/manual/larepass/sync-share",
-            },
+         //   {
+        //      text: "Sync and share",
+         //     link: "/manual/larepass/sync-share",
+         //   },
             {
               text: "Mount SMB",
               link: "/manual/olares/files/mount-SMB",
             },
-            {text: "Mount cloud storage",
-              link: "/manual/olares/files/mount-cloud-storage",
-            },
+           {
+             text: "Mount cloud storage",
+             link: "/manual/olares/files/mount-cloud-storage",
+           },
           ],
         },
         {
@@ -177,16 +240,24 @@ const side = {
           link: "/manual/olares/controlhub/",
           items: [
             {
-              text: "Navigate Control Hub",
-              link: "/manual/olares/controlhub/navigate-control-hub",
+              text: "Manage workloads",
+              link: "/manual/olares/controlhub/manage-workload",
             },
             {
-              text: "Edit system resource",
-              link: "/manual/olares/controlhub/edit-resource",
+              text: "Manage containers",
+              link: "/manual/olares/controlhub/manage-container",
             },
             {
-              text: "View container status",
-              link: "/manual/olares/controlhub/view-container",
+              text: "Manage resource config",
+              link: "/manual/olares/controlhub/manage-resource",
+            },
+            {
+              text: "Manage middleware",
+              link: "/manual/olares/controlhub/manage-middleware",
+            },
+            {
+              text: "Access Terminal",
+              link: "/manual/olares/controlhub/terminal",
             },
           ],
         },
@@ -197,11 +268,7 @@ const side = {
           items: [
             {
               text: "My Olares",
-              collapsed: true,
-              items: [
-                {text: "Account and device", link: "/manual/olares/settings/my-olares"},
-                {text: "Update system", link: "/manual/olares/settings/update"},
-              ],
+              link: "/manual/olares/settings/my-olares"
             },
             {
               text: "Manage users",
@@ -232,16 +299,16 @@ const side = {
               ],
               },
             {
-              text: "Manage integrations", 
+              text: "Manage integrations",
               link:"/manual/olares/settings/integrations",
              },
              {
-              text: "Customize appearance", 
+              text: "Customize appearance",
               link:"/manual/olares/settings/language-appearance",
              },
             {text: "Manage VPN", link: "/manual/olares/settings/remote-access",},
             {
-              text: "Configure network", 
+              text: "Configure network",
               collapsed: true,
               items: [
                 {
@@ -249,12 +316,13 @@ const side = {
                   link: "/manual/olares/settings/change-frp",
                 },
                 {
-                  text: "Set up hosts file", 
+                  text: "Set up hosts file",
                   link:"/manual/olares/settings/set-up-hosts",
                 },
               ],
              },
-            {text: "Manage GPU", link: "/manual/olares/settings/gpu-resource",},
+            {text: "Manage GPU", link: "/manual/olares/settings/gpu-resource"},
+            {text: "Set video playback", link: "/manual/olares/settings/video"},
             {
               text: "Backup and restore",
               collapsed: true,
@@ -287,6 +355,10 @@ const side = {
             text: "Install a multi-node Olares cluster",
             link: "/manual/best-practices/install-olares-multi-node",
           },
+          {
+          text: "Expand storage in Olares",
+          link: "/manual/best-practices/expand-storage-in-olares",
+        },
         ],
       },
     {
@@ -294,9 +366,8 @@ const side = {
       collapsed: true,
       link: "/manual/concepts/",
       items: [
-        { text: "Architecture", link: "/manual/concepts/architecture" },
-        { text: 
-          "Olares ID", 
+        { text: "Olares architecture", link: "/manual/concepts/system-architecture" },
+        { text: "Olares ID",
           link: "/manual/concepts/olares-id",
           collapsed: true,
           items: [
@@ -316,10 +387,10 @@ const side = {
               text: "Autonomous Reputation",
               link: "/manual/concepts/reputation",
             },
-            {
-              text: "Self-Sovereign Network",
-              link: "/manual/concepts/self-sovereign-network",
-            },
+          //  {
+           //   text: "Self-Sovereign Network",
+          //    link: "/manual/concepts/self-sovereign-network",
+            //   },
             {
               text: "Identity Wallet",
               link: "/manual/concepts/wallet",
@@ -523,47 +594,8 @@ const side = {
             text: "Olares versioning",
             link: "/developer/install/versioning",
           },
-        ],
-      },
-       //  {
-         //  text: "Additional installations",
-         //  link: "/developer/install/additional-installations",
-         //  collapsed: true,
-         //  items: [
-         //    { text: "Linux (via Docker)", link: "/developer/install/linux-via-docker-compose"},
-         //    {
-         //      text: "macOS",
-          //     collapsed: true,
-          //     items: [
-          //       {
-          //         text: "Using the script (recommended)",
-           //        link: "/developer/install/mac",
-          //       },
-          //      {
-          //         text: "Using Docker image",
-          //         link: "/developer/install/mac-via-docker-image",
-          //       },
-           //    ],
-          //   },
-          //   {
-          //     text: "Windows (WSL 2)",
-         //      collapsed: true,
-         //      items: [
-         //        {
-          //         text: "Using the script (recommended)",
-          //         link: "/developer/install/windows",
-          //       },
-          //       {
-          //         text: "Using Docker image",
-          //        link: "/developer/install/windows-via-docker-image",
-          //       },
-          //     ],
-          //   },
-          //   { text: "PVE", link: "/developer/install/pve" },
-          //   { text: "LXC", link: "/developer/install/lxc" },
-          //   { text: "Raspberry Pi", link: "/developer/install/raspberry-pi" },
-         //  ],
-       //  },
+    ],
+  },
     {
       text: "Develop Olares app",
       link: "/developer/develop/",
@@ -610,61 +642,60 @@ const side = {
               text: "OlaresManifest",
               link: "/developer/develop/package/manifest",
             },
-            {
+            /*{
               text: "Recommendation",
               link: "/developer/develop/package/recommend",
-            },
+            },*/
             {
               text: "Helm extension",
               link: "/developer/develop/package/extension",
             },
           ],
         },
-        {
-          text: "Advanced",
-          collapsed: true,
-          items: [
-            {
-              text: "terminus-info",
-              link: "/developer/develop/advanced/terminus-info",
-            },
-            {
-              text: "Service provider",
-              link: "/developer/develop/advanced/provider",
-            },
-            {
-              text: "AI",
-              link: "/developer/develop/advanced/ai",
-            },
-            { text: "Cookie", link: "/developer/develop/advanced/cookie" },
-            { text: "Database", link: "/developer/develop/advanced/database" },
-            {
-              text: "Account",
-              link: "/developer/develop/advanced/account",
-            },
-            {
-              text: "Market",
-              link: "/developer/develop/advanced/market",
-            },
-            {
-              text: "Websocket",
-              link: "/developer/develop/advanced/websocket",
-            },
-            {
-              text: "File upload",
-              link: "/developer/develop/advanced/file-upload",
-            },
-            {
-              text: "Secret",
-              link: "/developer/develop/advanced/secret",
-            },
-            {
-              text: "Kubesphere",
-              link: "/developer/develop/advanced/kubesphere",
-            },
-          ],
-        },
-
+        //  {
+        //   text: "Advanced",
+        //   collapsed: true,
+        //  items: [
+        //    {
+        //       text: "terminus-info",
+      //      link: "/developer/develop/advanced/terminus-info",
+        //     },
+        //     {
+        //       text: "Service provider",
+      //      link: "/developer/develop/advanced/provider",
+        //      },
+        //     {
+        //        text: "AI",
+      //        link: "/developer/develop/advanced/ai",
+        //       },
+        //      { text: "Cookie", link: "/developer/develop/advanced/cookie" },
+        //     { text: "Database", link: "/developer/develop/advanced/database" },
+        //     {
+        //       text: "Account",
+      //       link: "/developer/develop/advanced/account",
+        //      },
+        //     {
+        //       text: "Market",
+      //       link: "/developer/develop/advanced/market",
+        //      },
+        //       {
+        //       text: "Websocket",
+      //       link: "/developer/develop/advanced/websocket",
+        //     },
+        //      {
+        //       text: "File upload",
+      //       link: "/developer/develop/advanced/file-upload",
+        //      },
+        //     {
+        //       text: "Secret",
+      //       link: "/developer/develop/advanced/secret",
+        //      },
+        //      {
+        //        text: "Kubesphere",
+      //      link: "/developer/develop/advanced/kubesphere",
+        //      },
+      //   ],
+        //   },
         {
           text: "Submit application",
           collapsed: true,
@@ -793,7 +824,7 @@ export const en = defineConfig({
     socialLinks: [{ icon: "github", link: "https://github.com/beclab/olares" }],
 
     nav: [
-      { text: "Olares", link: "/manual/docs-home" },
+      { text: "Olares", link: "/manual/overview" },
       { text: "Olares Space", link: "/space/" },
       { text: "Use Cases", link: "/use-cases/" },
       { text: "Developer Guide", link: "/developer/install/" },

@@ -31,9 +31,10 @@ import (
 
 type InstallWizardDownloadModule struct {
 	common.KubeModule
-	Version        string
-	DownloadCdnUrl string
-	UrlOverride    string
+	Version     string
+	CDNService  string
+	UrlOverride string
+	ReleaseID   string
 }
 
 func (m *InstallWizardDownloadModule) Init() {
@@ -41,9 +42,10 @@ func (m *InstallWizardDownloadModule) Init() {
 	download := &task.LocalTask{
 		Name: "DownloadInstallWizard",
 		Action: &Download{
-			Version:        m.Version,
-			DownloadCdnUrl: m.DownloadCdnUrl,
-			UrlOverride:    m.UrlOverride,
+			Version:     m.Version,
+			CDNService:  m.CDNService,
+			UrlOverride: m.UrlOverride,
+			ReleaseID:   m.ReleaseID,
 		},
 		Retry: 1,
 	}

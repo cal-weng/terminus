@@ -78,7 +78,7 @@ func (t *InstallCudaDeps) Execute(runtime connector.Runtime) error {
 	switch {
 	case systemInfo.IsUbuntu():
 		cudaKeyringVersion = v1alpha2.CudaKeyringVersion1_0
-		if systemInfo.IsUbuntuVersionEqual(connector.Ubuntu24) {
+		if systemInfo.IsUbuntuVersionEqual(connector.Ubuntu24) || systemInfo.IsUbuntuVersionEqual(connector.Ubuntu25) {
 			cudaKeyringVersion = v1alpha2.CudaKeyringVersion1_1
 			osVersion = "24.04"
 		} else if systemInfo.IsUbuntuVersionEqual(connector.Ubuntu22) {
@@ -173,7 +173,11 @@ func (t *UpdateNvidiaContainerToolkitSource) Execute(runtime connector.Runtime) 
 		return fmt.Errorf("Failed to find %s binary in %s", gpgkey.Filename, keyPath)
 	}
 
-	cmd = fmt.Sprintf("apt-key add %s", keyPath)
+	if _, err := runtime.GetRunner().SudoCmd("install -d -m 0755 /usr/share/keyrings", false, true); err != nil {
+		return err
+	}
+	keyringPath := "/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg"
+	cmd = fmt.Sprintf("gpg --batch --yes --dearmor -o %s %s", keyringPath, keyPath)
 	if _, err := runtime.GetRunner().SudoCmd(cmd, false, true); err != nil {
 		return err
 	}
@@ -198,6 +202,10 @@ func (t *UpdateNvidiaContainerToolkitSource) Execute(runtime connector.Runtime) 
 	dstPath := filepath.Join("/etc/apt/sources.list.d", filepath.Base(libPath))
 	cmd = fmt.Sprintf("cp %s %s", libPath, dstPath)
 	if _, err := runtime.GetRunner().SudoCmd(cmd, false, true); err != nil {
+		return err
+	}
+
+	if _, err := runtime.GetRunner().SudoCmd(fmt.Sprintf("sed -i 's#^deb https://#deb [signed-by=%s] https://#' %s", keyringPath, dstPath), false, true); err != nil {
 		return err
 	}
 
@@ -226,7 +234,7 @@ type InstallNvidiaContainerToolkit struct {
 
 func (t *InstallNvidiaContainerToolkit) Execute(runtime connector.Runtime) error {
 	logger.Debugf("install nvidia-container-toolkit")
-	if _, err := runtime.GetRunner().SudoCmd("apt-get update && sudo apt-get install -y nvidia-container-toolkit jq", false, true); err != nil {
+	if _, err := runtime.GetRunner().SudoCmd("apt-get update && sudo apt-get install -y nvidia-container-toolkit=1.17.9-1 nvidia-container-toolkit-base=1.17.9-1 jq", false, true); err != nil {
 		return errors.Wrap(errors.WithStack(err), "Failed to apt-get install nvidia-container-toolkit")
 	}
 	return nil
@@ -387,7 +395,7 @@ func (g *GetCudaVersion) Execute(runtime connector.Runtime) error {
 		}
 	}
 	if cudaVersion != "" {
-		common.TerminusGlobalEnvs["CUDA_VERSION"] = cudaVersion
+		common.SetSystemEnv("OLARES_SYSTEM_CUDA_VERSION", cudaVersion)
 	}
 
 	return nil

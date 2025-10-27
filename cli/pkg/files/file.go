@@ -21,11 +21,8 @@ import (
 	_ "compress/bzip2"
 	"context"
 	"fmt"
-	cliversion "github.com/beclab/Olares/cli/version"
 	"io"
-	"math"
 	"net/http"
-	"net/url"
 	"os"
 	"os/exec"
 	"path"
@@ -39,7 +36,6 @@ import (
 	cm "github.com/beclab/Olares/cli/pkg/common"
 	"github.com/beclab/Olares/cli/pkg/core/common"
 	"github.com/beclab/Olares/cli/pkg/core/logger"
-	"github.com/beclab/Olares/cli/pkg/core/storage"
 	"github.com/beclab/Olares/cli/pkg/core/util"
 	"github.com/beclab/Olares/cli/pkg/utils"
 	"github.com/cavaliergopher/grab/v3"
@@ -105,23 +101,21 @@ const (
 )
 
 type KubeBinary struct {
-	Type                string
-	ID                  string
-	FileName            string
-	FileNameHash        string
-	Os                  string
-	Arch                string
-	Version             string
-	Url                 string
-	BaseDir             string
-	Zone                string
-	CheckSum            bool
-	PrintOutput         bool
-	OverWrite           bool
-	WriteDownloadingLog bool
-	Provider            storage.Provider
-	Md5sum              string
-	CheckMd5Sum         bool
+	Type         string
+	ID           string
+	FileName     string
+	FileNameHash string
+	Os           string
+	Arch         string
+	Version      string
+	Url          string
+	BaseDir      string
+	Zone         string
+	CheckSum     bool
+	PrintOutput  bool
+	OverWrite    bool
+	Md5sum       string
+	CheckMd5Sum  bool
 }
 
 func NewKubeBinary(name, arch, osType, osVersion, osPlatformFamily, version, prePath, downloadMirrors string) *KubeBinary {
@@ -280,7 +274,7 @@ func NewKubeBinary(name, arch, osType, osVersion, osPlatformFamily, version, pre
 		component.Type = COMPONENT
 		component.FileName = fmt.Sprintf("redis-%s.tar.gz", version)
 		component.FileNameHash = utils.MD5(component.FileName)
-		component.Url = fmt.Sprintf(RedisUrl, common.DownloadUrl, component.FileNameHash)
+		component.Url = fmt.Sprintf(RedisUrl, common.DefaultOlaresCDNService, component.FileNameHash)
 		component.CheckSum = false
 		component.BaseDir = filepath.Join(prePath, component.Type)
 	case juicefs:
@@ -329,12 +323,6 @@ func NewKubeBinary(name, arch, osType, osVersion, osPlatformFamily, version, pre
 		component.Url = fmt.Sprintf("https://github.com/fqrouter/conntrack-tools/archive/refs/tags/conntrack-tools-%s.tar.gz", version)
 		component.CheckSum = false
 		component.BaseDir = filepath.Join(prePath, component.Type)
-	case installwizard:
-		component.Type = WIZARD
-		component.FileName = fmt.Sprintf("install-wizard-v%s.tar.gz", version)
-		component.Url, _ = url.JoinPath(component.getDownloadMirrors(downloadMirrors), cliversion.VENDOR_REPO_PATH, fmt.Sprintf("install-wizard-v%s.tar.gz", version))
-		component.CheckSum = false
-		component.BaseDir = filepath.Join(prePath, fmt.Sprintf("v%s", version))
 	case cudakeyring: // + gpu
 		if strings.Contains(osVersion, "24.") {
 			version = "1.1"
@@ -342,21 +330,21 @@ func NewKubeBinary(name, arch, osType, osVersion, osPlatformFamily, version, pre
 		component.Type = GPU
 		component.FileName = fmt.Sprintf("%s_%s_cuda-keyring_%s-1_all.deb", osPlatformFamily, osVersion, version)
 		component.FileNameHash = utils.MD5(component.FileName)
-		component.Url = fmt.Sprintf(CudaKeyringCNDUrl, common.DownloadUrl, getGpuCDNPrefix(arch, component.FileNameHash)) //getCudaKeyringUrl(arch, constants.OsVersion, version)
+		component.Url = fmt.Sprintf(CudaKeyringCNDUrl, common.DefaultOlaresCDNService, getGpuCDNPrefix(arch, component.FileNameHash)) //getCudaKeyringUrl(arch, constants.OsVersion, version)
 		component.CheckSum = false
 		component.BaseDir = filepath.Join(prePath, component.Type)
 	case gpgkey:
 		component.Type = GPU
 		component.FileName = "gpgkey"
 		component.FileNameHash = utils.MD5(component.FileName)
-		component.Url = fmt.Sprintf(CudaKeyringCNDUrl, common.DownloadUrl, getGpuCDNPrefix(arch, component.FileNameHash))
+		component.Url = fmt.Sprintf(CudaKeyringCNDUrl, common.DefaultOlaresCDNService, getGpuCDNPrefix(arch, component.FileNameHash))
 		component.CheckSum = false
 		component.BaseDir = filepath.Join(prePath, component.Type)
 	case libnvidia:
 		component.Type = GPU
 		component.FileName = fmt.Sprintf("%s_%s_libnvidia-container.list", osPlatformFamily, osVersion)
 		component.FileNameHash = utils.MD5(component.FileName)
-		component.Url = fmt.Sprintf(CudaKeyringCNDUrl, common.DownloadUrl, getGpuCDNPrefix(arch, component.FileNameHash))
+		component.Url = fmt.Sprintf(CudaKeyringCNDUrl, common.DefaultOlaresCDNService, getGpuCDNPrefix(arch, component.FileNameHash))
 		component.CheckSum = false
 		component.BaseDir = filepath.Join(prePath, component.Type)
 	case wsl: // + wsl
@@ -387,9 +375,9 @@ func NewKubeBinary(name, arch, osType, osVersion, osPlatformFamily, version, pre
 	return component
 }
 
-func (b *KubeBinary) getDownloadMirrors(downloadMirrors string) string {
+func (b *KubeBinary) GetDownloadMirrors(downloadMirrors string) string {
 	if downloadMirrors == "" {
-		return common.DownloadUrl
+		return common.DefaultOlaresCDNService
 	}
 	return downloadMirrors
 }
@@ -528,32 +516,6 @@ func (b *KubeBinary) GetFileSize() (int64, error) {
 }
 
 func (b *KubeBinary) Download() error {
-	var line = make(chan []interface{}, 50)
-	defer close(line)
-
-	go func() {
-		for {
-			select {
-			case r, ok := <-line:
-				if !ok {
-					return
-				}
-
-				if r == nil || len(r) < 3 {
-					continue
-				}
-				var msg = r[0].(string)
-				var state = r[1].(string)
-				var percent = r[2].(float64)
-				if b.WriteDownloadingLog {
-					if err := b.Provider.SaveInstallLog(msg, state, int64(percent)); err != nil {
-						logger.Errorf("save download log failed %v", err)
-					}
-				}
-			}
-		}
-	}()
-
 	for i := 5; i > 0; i-- {
 
 		client := grab.NewClient()
@@ -586,7 +548,6 @@ func (b *KubeBinary) Download() error {
 		if err := resp.Err(); err != nil {
 			logger.Errorf("Download failed: %v", err)
 			if i == 1 {
-				line <- []interface{}{"All download attempts failed", common.StateFail, float64(0)}
 				logger.Error("All download attempts failed")
 				return err
 			}
@@ -609,7 +570,6 @@ func (b *KubeBinary) Download() error {
 		if err := b.SHA256Check(); err != nil { // ~ checksum
 			logger.Errorf("SHA256 check failed: %v", err)
 			if i == 1 {
-				line <- []interface{}{fmt.Sprintf("SHA256 check failed: %v", err), common.StateFail, float64(0)}
 				return err
 			}
 			path := b.Path()
@@ -621,7 +581,6 @@ func (b *KubeBinary) Download() error {
 		if err := b.Md5Check(); err != nil { // ~ checksum
 			logger.Errorf("MD5 check failed: %v", err)
 			if i == 1 {
-				line <- []interface{}{fmt.Sprintf("MD5 check failed: %v", err), common.StateFail, float64(0)}
 				return err
 			}
 			path := b.Path()
@@ -631,7 +590,6 @@ func (b *KubeBinary) Download() error {
 		}
 
 		logger.Debugf("%s download succeeded", b.FileName)
-		line <- []interface{}{fmt.Sprintf("%s download succeeded", b.FileName), common.StateDownload, math.Round(1 * 10000 / float64(common.DefaultInstallSteps))}
 		break
 	}
 

@@ -3,9 +3,20 @@ outline: [2, 3]
 description: 了解如何利用“我的 Olares”页面管理账户、设备、安全设置及网络访问策略。 
 ---
 
-# 账户与设备管理
+# 我的 Olares
 
 你可以通过设置中的**我的 Olares** 功能管理 Olares 账户、连接设备和安全策略。点击**设置**页面左上角的个人头像即可进入**我的 Olares**。
+
+![My Olares](/images/zh/manual/olares/my-olares.png#bordered)
+
+## 我的硬件
+
+查看和管理 Olares 硬件。你可以查看**型号**、**设备状态**、**设备标识符**、 **CPU** 和 **GPU** 信息。
+
+可执行的操作包括：
+
+* **关机**：点击以关闭 Olares 设备。请使用 LarePass 完成后续操作。关机后 Olares 状态将在 LarePass 上显示为 `Olares 已关机`。无法远程操作，需手动开机。
+* **重启**：点击以重启 Olares 设备，请使用 LarePass 完成后续操作。重启过程中 Olares 状态将在 LarePass 上显示为 `正在重启`，约 5–8 分钟后恢复为 `Olares 运行中`。
 
 ## Olares Space
 在 Olares Space 中查看你的订阅计划详情和使用情况，包括反向代理方案、
@@ -29,6 +40,10 @@ description: 了解如何利用“我的 Olares”页面管理账户、设备、
 - **登录安全要求**：设置登录 Olares 的身份验证方式。
   * **双因素**（推荐）：需要你的登录密码和 LarePass 生成的两步验证码，安全性更高。
   * **单因素**：仅需要你的登录密码（安全性较低）。
+
+## 当前版本
+
+查看当前 Olares 系统的版本。如果提示有可用的新版本，请转至 LarePass 手机客户端**设置** > **Olares 管理**页面下完成系统升级。详细步骤请参考[升级 Olares](../../larepass/manage-olares.md#升级-olares)。
 
 ## 查看登录历史
 

@@ -54,7 +54,21 @@ If you already have your own MinIO cluster or an S3 (or S3-compatible) bucket, y
 
 ## Step 2: Add a worker node to the cluster
 
-1. On the worker node, download `joincluster.sh` from https://joincluster.com.
+1. On the worker node, download `joincluster.sh` using:
+
+::: code-group
+
+```bash [curl]
+# This command is for users who have curl installed.
+curl -fsSL https://raw.githubusercontent.com/beclab/Olares/refs/heads/main/build/base-package/joincluster.sh -o joincluster.sh
+```
+
+```bash [wget]
+# This command is for users who have wget installed.
+wget https://raw.githubusercontent.com/beclab/Olares/refs/heads/main/build/base-package/joincluster.sh
+```
+:::
+
 2. Run the `joincluster.sh` script with the necessary environment variables. These variables tell the worker node how to connect to the master node. At a minimum, you must set the MASTER_HOST variable, which specifies the IP address of the master node:
    ```bash
    export MASTER_HOST=192.168.1.15
@@ -150,7 +164,7 @@ Once your cluster is set up, changes in network configurations can disrupt the m
 
 ## Learn more
 
-- [Olares system architecture](../system-architecture.md#distributed-file-system): Understand the distributed file system that underpins Olares, ensuring scalability, high availability, and seamless data management.
+- [Olares system architecture](../concepts/system-architecture.md#distributed-file-system): Understand the distributed file system that underpins Olares, ensuring scalability, high availability, and seamless data management.
 - [The system daemon: olaresd](../../developer/install/installation-overview.md#system-daemon-olaresd): Learn about the central system process that orchestrates and manages core Olares functions.
 - [Data](../concepts/data.md#juicefs): Dive into how Olares leverages JuiceFS to provide a unified file system for efficient data storage and retrieval.
 - [Olares CLI](../../developer/install/cli/olares-cli.md): Explore the command-line interface for managing Olares installation.

@@ -3,8 +3,6 @@ package upgrade
 import (
 	"context"
 	"fmt"
-	"github.com/beclab/Olares/cli/pkg/core/task"
-	"github.com/beclab/Olares/cli/pkg/terminus"
 	"os"
 	"path"
 	"time"
@@ -12,14 +10,26 @@ import (
 	"github.com/beclab/Olares/cli/pkg/common"
 	"github.com/beclab/Olares/cli/pkg/core/connector"
 	"github.com/beclab/Olares/cli/pkg/core/logger"
+	"github.com/beclab/Olares/cli/pkg/core/task"
+	"github.com/beclab/Olares/cli/pkg/gpu"
+	"github.com/beclab/Olares/cli/pkg/terminus"
 	"github.com/beclab/Olares/cli/pkg/utils"
+	iamv1alpha2 "github.com/beclab/api/iam/v1alpha2"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
+	kruntime "k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/kubernetes"
-	metadataclient "k8s.io/client-go/metadata"
 	ctrl "sigs.k8s.io/controller-runtime"
+	ctrlclient "sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+type breakingUpgraderBase struct {
+	upgraderBase
+}
+
+func (u breakingUpgraderBase) AddedBreakingChange() bool {
+	return true
+}
 
 // upgraderBase is the general-purpose upgrader implementation
 // for upgrading across versions without any breaking changes.
@@ -28,14 +38,21 @@ import (
 // should use this as a base for injecting and/or rewriting specific tasks as needed
 type upgraderBase struct{}
 
+func (u upgraderBase) AddedBreakingChange() bool {
+	return false
+}
+
 func (u upgraderBase) PrepareForUpgrade() []task.Interface {
-	return []task.Interface{
+	var tasks []task.Interface
+	tasks = append(tasks, upgradeKSCore()...)
+	tasks = append(tasks,
 		&task.LocalTask{
 			Name:   "PrepareUserInfoForUpgrade",
 			Action: new(prepareUserInfoForUpgrade),
 			Retry:  5,
 		},
-	}
+	)
+	return tasks
 }
 
 func (u upgraderBase) ClearAppChartValues() []task.Interface {
@@ -92,10 +109,41 @@ func (u upgraderBase) UpgradeSystemComponents() []task.Interface {
 	// reentrant
 	return []task.Interface{
 		&task.LocalTask{
+			Name:   "UpgradeGPUPlugin",
+			Action: new(gpu.InstallPlugin),
+		},
+		&task.LocalTask{
+			Name:   "UpgradeSettings",
+			Action: new(upgradeSettings),
+			Retry:  10,
+			Delay:  15 * time.Second,
+		},
+		&task.LocalTask{
+			Name:   "UpgradeSystemEnvs",
+			Action: new(terminus.ApplySystemEnv),
+			Retry:  5,
+			Delay:  15 * time.Second,
+		},
+		&task.LocalTask{
 			Name:   "UpgradeSystemComponents",
 			Action: new(upgradeSystemComponents),
 			Retry:  10,
 			Delay:  15 * time.Second,
+		},
+		&task.LocalTask{
+			Name:   "UpgradeUserEnvs",
+			Action: new(terminus.CreateUserEnvConfigMap),
+			Retry:  5,
+			Delay:  15 * time.Second,
+		},
+	}
+}
+
+func (u upgraderBase) UpdateOlaresVersion() []task.Interface {
+	return []task.Interface{
+		&task.LocalTask{
+			Name:   "UpdateOlaresVersion",
+			Action: new(updateOlaresVersion),
 		},
 	}
 }
@@ -120,29 +168,37 @@ func (p *prepareUserInfoForUpgrade) Execute(runtime connector.Runtime) error {
 	if err != nil {
 		return fmt.Errorf("failed to get rest config: %s", err)
 	}
-	// we only need user's metadata, this avoids the dependency on kubesphere's module
-	metadataClient, err := metadataclient.NewForConfig(config)
+	scheme := kruntime.NewScheme()
+	err = iamv1alpha2.AddToScheme(scheme)
 	if err != nil {
-		return fmt.Errorf("failed to get metadata client: %s", err)
+		return fmt.Errorf("failed to add user scheme: %s", err)
 	}
-	userGVR := schema.GroupVersionResource{
-		Group:    "iam.kubesphere.io",
-		Version:  "v1alpha2",
-		Resource: "users",
+	userClient, err := ctrlclient.New(config, ctrlclient.Options{Scheme: scheme})
+	if err != nil {
+		return fmt.Errorf("failed to create client: %s", err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 	defer cancel()
-	users, err := metadataClient.Resource(userGVR).List(ctx, metav1.ListOptions{})
+	var userList iamv1alpha2.UserList
+	err = userClient.List(ctx, &userList)
 	if err != nil {
 		return fmt.Errorf("failed to list users: %s", err)
 	}
-	var usersToUpgrade []metav1.PartialObjectMetadata
+	var usersToUpgrade []iamv1alpha2.User
 	var adminUser string
 	client, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		return fmt.Errorf("failed to create kubernetes client: %s", err)
 	}
-	for _, user := range users.Items {
+	for _, user := range userList.Items {
+		if user.Status.State == "Failed" {
+			logger.Infof("skipping user %s that failed to be created", user.Name)
+			continue
+		}
+		if user.Status.State == "Deleting" || user.DeletionTimestamp != nil {
+			logger.Infof("skipping user %s that's being deleted", user.Name)
+			continue
+		}
 		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Minute)
 		defer cancel()
 		_, err := client.CoreV1().Namespaces().Get(ctx, fmt.Sprintf("user-space-%s", user.Name), metav1.GetOptions{})
@@ -188,7 +244,7 @@ func (u *upgradeUserComponents) Execute(runtime connector.Runtime) error {
 	if !ok {
 		return fmt.Errorf("no users to upgrade found in cache")
 	}
-	users := usersCache.([]metav1.PartialObjectMetadata)
+	users := usersCache.([]iamv1alpha2.User)
 	adminUserCache, ok := u.PipelineCache.Get(common.CacheUpgradeAdminUser)
 	if !ok {
 		return fmt.Errorf("no admin user to upgrade found in cache")
@@ -269,21 +325,44 @@ func (u *upgradeUserComponents) Execute(runtime connector.Runtime) error {
 	return nil
 }
 
+type upgradeSettings struct {
+	common.KubeAction
+}
+
+func (u *upgradeSettings) Execute(runtime connector.Runtime) error {
+	config, err := ctrl.GetConfig()
+	if err != nil {
+		return fmt.Errorf("failed to get rest config: %s", err)
+	}
+	actionConfig, settings, err := utils.InitConfig(config, common.NamespaceDefault)
+	if err != nil {
+		return err
+	}
+	ctx, cancelSettings := context.WithTimeout(context.Background(), 3*time.Minute)
+	defer cancelSettings()
+	settingsChartPath := path.Join(runtime.GetInstallerDir(), "wizard", "config", "settings")
+	if err := utils.UpgradeCharts(ctx, actionConfig, settings, common.ChartNameSettings, settingsChartPath, "", common.NamespaceDefault, nil, true); err != nil {
+		return err
+	}
+	return nil
+}
+
 type upgradeSystemComponents struct {
 	common.KubeAction
 }
 
 func (u *upgradeSystemComponents) Execute(runtime connector.Runtime) error {
-	config, err := ctrl.GetConfig()
-	if err != nil {
-		return fmt.Errorf("failed to get rest config: %s", err)
+	config, configErr := ctrl.GetConfig()
+	if configErr != nil {
+		return fmt.Errorf("failed to get rest config: %s", configErr)
 	}
+
 	actionConfig, settings, err := utils.InitConfig(config, common.NamespaceOsPlatform)
 	if err != nil {
 		return err
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)
-	defer cancel()
+	ctx, cancelPlatform := context.WithTimeout(context.Background(), 3*time.Minute)
+	defer cancelPlatform()
 	platformChartPath := path.Join(runtime.GetInstallerDir(), "wizard", "config", "os-platform")
 	if err := utils.UpgradeCharts(ctx, actionConfig, settings, common.ChartNameOSPlatform, platformChartPath, "", common.NamespaceOsPlatform, nil, true); err != nil {
 		return err
@@ -293,14 +372,26 @@ func (u *upgradeSystemComponents) Execute(runtime connector.Runtime) error {
 	if err != nil {
 		return err
 	}
-	ctx, cancel = context.WithTimeout(context.Background(), 3*time.Minute)
-	defer cancel()
+	ctx, cancelFramework := context.WithTimeout(context.Background(), 3*time.Minute)
+	defer cancelFramework()
 	frameworkChartPath := path.Join(runtime.GetInstallerDir(), "wizard", "config", "os-framework")
 	if err := utils.UpgradeCharts(ctx, actionConfig, settings, common.ChartNameOSFramework, frameworkChartPath, "", common.NamespaceOsFramework, nil, true); err != nil {
 		return err
 	}
 
-	actionConfig, settings, err = utils.InitConfig(config, common.NamespaceDefault)
+	return nil
+}
+
+type updateOlaresVersion struct {
+	common.KubeAction
+}
+
+func (u *updateOlaresVersion) Execute(runtime connector.Runtime) error {
+	config, err := ctrl.GetConfig()
+	if err != nil {
+		return fmt.Errorf("failed to get rest config: %s", err)
+	}
+	actionConfig, settings, err := utils.InitConfig(config, common.NamespaceDefault)
 	if err != nil {
 		return err
 	}
@@ -308,7 +399,8 @@ func (u *upgradeSystemComponents) Execute(runtime connector.Runtime) error {
 	defer cancelSettings()
 	settingsChartPath := path.Join(runtime.GetInstallerDir(), "wizard", "config", "settings")
 
-	if err := utils.UpgradeCharts(ctx, actionConfig, settings, common.ChartNameSettings, settingsChartPath, "", common.NamespaceDefault, nil, true); err != nil {
+	vals := map[string]interface{}{"version": u.KubeConf.Arg.OlaresVersion}
+	if err := utils.UpgradeCharts(ctx, actionConfig, settings, common.ChartNameSettings, settingsChartPath, "", common.NamespaceDefault, vals, true); err != nil {
 		return err
 	}
 	return nil

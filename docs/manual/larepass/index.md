@@ -1,4 +1,5 @@
 ---
+description: User documentation for LarePass. Learn how to access and manage Olares through the LarePass client, including account management, file synchronization, device management, system upgrade, password management, and content collection.
 outline: [2, 3]
 ---
 
@@ -19,13 +20,12 @@ Create and manage your Olares ID, connect integrations with other services, and 
 - [Manage integrations](integrations.md)
 
 ### Secure file access & sync
-Access and sync your Olares files across devices.
 - [Manage files with LarePass](manage-files.md)
-- [Sync and share files](sync-share.md)
 
 ### Device & network management
 Activate and manage Olares devices, and securely connect to Olares via LarePass VPN.
 - [Activate your Olares device](activate-olares.md)
+- [Upgrade Olares](manage-olares.md#upgrade-olares)
 - [Log in to Olares with 2FA](activate-olares.md#two-factor-verification-with-larepass)
 - [Manage Olares](manage-olares.md)
 - [Switch networks](manage-olares.md#switch-from-wired-to-wireless-network)
@@ -45,7 +45,7 @@ Use LarePass to collect web content and follow RSS feeds.
 
 ## Download and install LarePass
 
-Get the latest version for your device at the [LarePass website](https://www.olares.com/larepass).
+Get the latest version for your device at the [LarePass website](https://larepass.olares.com).
 
 ### Install the LarePass browser extension
 
@@ -63,7 +63,7 @@ Get the latest version for your device at the [LarePass website](https://www.ola
 
 <template #Install-offline>
 
-1. Visit [olares.com/larepass](https://olares.com/larepass) and download the extension ZIP file.
+1. Visit [larepass.olares.com](https://larepass.olares.com) and download the extension ZIP file.
 2. Go to `chrome://extensions/` in your browser.
 3. Enable **Developer mode** in the top-right corner.
 4. Click **Load unpacked** and select the extracted LarePass extension folder.

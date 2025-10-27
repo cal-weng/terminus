@@ -7,8 +7,8 @@
 ![Build Status](https://github.com/beclab/olares/actions/workflows/release-daily.yaml/badge.svg)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/beclab/olares)](https://github.com/beclab/olares/releases)
 [![GitHub Repo stars](https://img.shields.io/github/stars/beclab/olares?style=social)](https://github.com/beclab/olares/stargazers)
-[![Discord](https://img.shields.io/badge/Discord-7289DA?logo=discord&logoColor=white)](https://discord.com/invite/BzfqrgQPDK)
-[![License](https://img.shields.io/badge/License-Olares-darkblue)](https://github.com/beclab/olares/blob/main/LICENSE.md)
+[![Discord](https://img.shields.io/badge/Discord-7289DA?logo=discord&logoColor=white)](https://discord.gg/olares)
+[![License](https://img.shields.io/badge/License-AGPL--3.0-blue)](https://github.com/beclab/olares/blob/main/LICENSE)
 
 <p>
   <a href="./README.md"><img alt="Readme in English" src="https://img.shields.io/badge/English-FFFFFF"></a>
@@ -21,7 +21,7 @@
 <p align="center">
   <a href="https://olares.com">Website</a> ·
   <a href="https://docs.olares.com">Documentation</a> ·
-  <a href="https://olares.com/larepass">Download LarePass</a> ·
+  <a href="https://larepass.olares.com">Download LarePass</a> ·
   <a href="https://github.com/beclab/apps">Olares Apps</a> ·
   <a href="https://space.olares.com">Olares Space</a>
 </p>
@@ -30,7 +30,7 @@
 >
 >*It's time for a change.* 
 
-![Personal Cloud](https://file.bttcdn.com/github/olares/public-cloud-to-personal-cloud.jpg)
+![Personal Cloud](https://app.cdn.olares.com/github/olares/public-cloud-to-personal-cloud.jpg)
 We believe you have a fundamental right to control your digital life. The most effective way to uphold this right is by hosting your data locally, on your own hardware.
 
 Olares is an **open-source personal cloud operating system** designed to empower you to own and manage your digital assets locally. Instead of relying on public cloud services, you can deploy powerful open-source alternatives locally on Olares, such as Ollama for hosting LLMs, SD WebUI for image generation, and Mastodon for building censor free social space. Imagine the power of the cloud, but with you in complete command.
@@ -41,9 +41,9 @@ Olares is an **open-source personal cloud operating system** designed to empower
 
 Just as Public clouds offer IaaS, PaaS, and SaaS layers, Olares provides open-source alternatives to each of these layers.
 
-  ![Tech Stacks](https://file.bttcdn.com/github/olares/olares-architecture.jpg)
+  ![Tech Stacks](https://app.cdn.olares.com/github/olares/olares-architecture.jpg)
 
- For detailed description of each component, refer to [Olares architecture](https://docs.olares.com/manual/system-architecture.html).
+ For detailed description of each component, refer to [Olares architecture](https://docs.olares.com/manual/concepts/system-architecture.html).
 
 > 🔍 **How is Olares different from traditional NAS?**
 >
@@ -66,15 +66,15 @@ Here are some screenshots from the UI for a sneak peek:
 
 | **Desktop–Streamlined and familiar portal**     |  **Files–A secure home to your data**
 | :--------: | :-------: |
-| ![Desktop](https://file.bttcdn.com/github/terminus/v2/desktop.jpg) | ![Files](https://file.bttcdn.com/github/terminus/v2/files.jpg) |
+| ![Desktop](https://app.cdn.olares.com/github/terminus/v2/desktop.jpg) | ![Files](https://app.cdn.olares.com/github/terminus/v2/files.jpg) |
 | **Vault–1Password alternative**|**Market–App ecosystem in your control** |
-| ![vault](https://file.bttcdn.com/github/terminus/v2/vault.jpg) | ![market](https://file.bttcdn.com/github/terminus/v2/market.jpg) |
+| ![vault](https://app.cdn.olares.com/github/terminus/v2/vault.jpg) | ![market](https://app.cdn.olares.com/github/terminus/v2/market.jpg) |
 |**Wise–Your digital secret garden** | **Settings–Manage Olares efficiently** |
-| ![settings](https://file.bttcdn.com/github/terminus/v2/wise.jpg) | ![](https://file.bttcdn.com/github/terminus/v2/settings.jpg) |
+| ![settings](https://app.cdn.olares.com/github/terminus/v2/wise.jpg) | ![](https://app.cdn.olares.com/github/terminus/v2/settings.jpg) |
 |**Dashboard–Constant system monitoring**  | **Profile–Your unique homepage** |
-| ![dashboard](https://file.bttcdn.com/github/terminus/v2/dashboard.jpg) | ![profile](https://file.bttcdn.com/github/terminus/v2/profile.jpg) |
+| ![dashboard](https://app.cdn.olares.com/github/terminus/v2/dashboard.jpg) | ![profile](https://app.cdn.olares.com/github/terminus/v2/profile.jpg) |
 | **Studio–Develop, debug, and deploy**|**Control Hub–Manage Kubernetes clusters easily**  |
-| ![Studio](https://file.bttcdn.com/github/terminus/v2/devbox.jpg) | ![Controlhub](https://file.bttcdn.com/github/terminus/v2/controlhub.jpg)|
+| ![Studio](https://app.cdn.olares.com/github/terminus/v2/devbox.jpg) | ![Controlhub](https://app.cdn.olares.com/github/terminus/v2/controlhub.jpg)|
 
 
 ## Key use cases
@@ -134,7 +134,7 @@ https://docs.olares.com/developer/contribute/olares.html
 
 * [**GitHub Discussion**](https://github.com/beclab/olares/discussions). Best for sharing feedback and asking questions.
 * [**GitHub Issues**](https://github.com/beclab/olares/issues). Best for filing bugs you encounter using Olares and submitting feature proposals. 
-* [**Discord**](https://discord.com/invite/BzfqrgQPDK). Best for sharing anything Olares.
+* [**Discord**](https://discord.gg/olares). Best for sharing anything Olares.
 
 ## Special thanks
 

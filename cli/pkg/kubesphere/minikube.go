@@ -3,6 +3,7 @@ package kubesphere
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/beclab/Olares/cli/pkg/storage"
 	"os"
 	"os/exec"
 	"path"
@@ -50,7 +51,7 @@ func (t *CreateMiniKubeCluster) Execute(runtime connector.Runtime) error {
 		}
 	}
 	logger.Infof("creating minikube cluster %s ...", t.KubeConf.Arg.MinikubeProfile)
-	cmd = fmt.Sprintf("%s start -p '%s' --kubernetes-version=v1.22.10 --container-runtime=containerd --network-plugin=cni --cni=calico --cpus='4' --memory='8g' --ports=30180:30180,443:443,80:80", minikube, t.KubeConf.Arg.MinikubeProfile)
+	cmd = fmt.Sprintf("%s start -p '%s' --kubernetes-version=v1.33.3 --container-runtime=containerd --network-plugin=cni --cni=calico --cpus='4' --memory='8g' --ports=30180:30180,443:443,80:80", minikube, t.KubeConf.Arg.MinikubeProfile)
 	if _, err := runtime.GetRunner().Cmd(cmd, false, true); err != nil {
 		return errors.Wrap(err, "failed to create minikube cluster")
 	}
@@ -221,6 +222,28 @@ func (t *ReloadMinikubeContainerdConfig) Execute(runtime connector.Runtime) erro
 	return nil
 }
 
+type CreateSharedPathInMiniKubeContainer struct {
+	common.KubeAction
+}
+
+func (t *CreateSharedPathInMiniKubeContainer) Execute(runtime connector.Runtime) error {
+	minikube, err := util.GetCommand(common.CommandMinikube)
+	if err != nil {
+		return fmt.Errorf("failed to get minikube command: %w", err)
+	}
+	createCMD := fmt.Sprintf("%s ssh 'sudo mkdir -p %s' -p %s", minikube, storage.OlaresSharedLibDir, t.KubeConf.Arg.MinikubeProfile)
+	_, err = runtime.GetRunner().Cmd(createCMD, false, false)
+	if err != nil {
+		return fmt.Errorf("failed to create shared path in minikube container: %w", err)
+	}
+	chownCMD := fmt.Sprintf("%s ssh 'sudo chown 1000:1000 %s' -p %s", minikube, storage.OlaresSharedLibDir, t.KubeConf.Arg.MinikubeProfile)
+	_, err = runtime.GetRunner().Cmd(chownCMD, false, false)
+	if err != nil {
+		return fmt.Errorf("failed to change ownership of shared path in minikube container: %w", err)
+	}
+	return nil
+}
+
 type CreateMinikubeClusterModule struct {
 	common.KubeModule
 }
@@ -253,12 +276,18 @@ func (m *CreateMinikubeClusterModule) Init() {
 		Action: new(ReloadMinikubeContainerdConfig),
 	}
 
+	createSharedPathInMiniKubeContainer := &task.LocalTask{
+		Name:   "CreateSharedPathInMiniKubeContainer",
+		Action: new(CreateSharedPathInMiniKubeContainer),
+	}
+
 	m.Tasks = []task.Interface{
 		createCluster,
 		retagMinikubeKubeImages,
 		getMiniKubeContainerdConfig,
 		setMirrorsToMinikubeContainerdConfig,
 		reloadMinikubeContainerdConfig,
+		createSharedPathInMiniKubeContainer,
 	}
 }
 

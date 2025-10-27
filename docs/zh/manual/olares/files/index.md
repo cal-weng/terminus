@@ -16,20 +16,14 @@ Olares 内置的文件应用为用户提供了安全高效的文件存储与同�
 
 ![Files](/images/zh/manual/olares/files.png#bordered)
 
-* **存储盘**（Drive）：用于存储不需要频繁同步或修改的文件。
-* **同步盘**（Sync）：用于在设备间同步文件和目录。
-* **应用盘**（Application）：存储应用与缓存数据，仅用于开发和调试目的。
-* **云存储** （Cloud Drive）：用于加载、访问第三方云存储服务包括 Google Drive、Drop Box、 AWS S3、腾讯云对象存储服务（COS）。
+* **存储**（Drive）：用于存储个人文件，适合那些不需要频繁同步或修改的内容。每个用户都有一个首页目录，默认包含文档、图片、影视、下载等文件夹。外部存储（如 USB 驱动器或 SMB 共享）会显示在**外部设备**下。
+* **应用**（Application）：存储应用与缓存数据，主要用于开发和调试目的。
+* **云存储** （Cloud Drive）通过[**集成**](../../larepass/integrations.md)功能连接的外部云存储服务，包括 Google Drive、AWS S3 和 腾讯云 COS。可直接在 Olares 中挂载、访问和管理远程文件。
 
 ---
 <div>
 <h4><a href="./add-edit-download">添加、编辑和下载文件</a></h4>
 了解 Olares 中文件管理的基本操作。
-</div>
-
-<div>
-<h4><a href="../../larepass/sync-share">同步和共享文件</a></h4>
-了解如何在设备间保持文件更新，以及如何与其他 Olares 成员共享文件。
 </div>
 
 <div>
@@ -41,8 +35,6 @@ Olares 内置的文件应用为用户提供了安全高效的文件存储与同�
   <h4><a href="./mount-cloud-storage">挂载云存储</a></h4>
   了解如何在 Olares 中挂载并访问第三方云存储服务。
 </div>
-
-
 
 
 

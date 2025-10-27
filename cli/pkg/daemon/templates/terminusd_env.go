@@ -14,18 +14,5 @@ KUBE_TYPE={{ .KubeType }}
 REGISTRY_MIRRORS={{ .RegistryMirrors }}
 BASE_DIR={{ .BaseDir }}
 LOCAL_GPU_ENABLE={{ .GpuEnable }}
-PUBLICLY_ACCESSIBLE={{ .PubliclyAccessible }}
-CLOUDFLARE_ENABLE={{ .CloudflareEnable }}
-FRP_ENABLE={{ .FrpEnable }}
-FRP_SERVER={{ .FrpServer }}
-FRP_PORT={{ .FrpPort }}
-FRP_AUTH_METHOD={{ .FrpAuthMethod }}
-FRP_AUTH_TOKEN=
 TOKEN_MAX_AGE={{ .TokenMaxAge }}
-MARKET_PROVIDER={{ .MarketProvider }}
-TERMINUS_CERT_SERVICE_API={{ .TerminusCertServiceAPI }}
-TERMINUS_DNS_SERVICE_API={{ .TerminusDNSServiceAPI }}
-{{- range $key, $val := .TerminusGlobalEnvs }}
-{{ $key }}={{ $val }}
-{{- end }}
     `)))

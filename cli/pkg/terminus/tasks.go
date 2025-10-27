@@ -5,7 +5,6 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"github.com/beclab/Olares/cli/version"
 	"io/fs"
 	"io/ioutil"
 	"net"
@@ -18,6 +17,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/beclab/Olares/cli/version"
 
 	"github.com/beclab/Olares/cli/pkg/storage"
 	corev1 "k8s.io/api/core/v1"
@@ -103,8 +104,11 @@ func (t *CheckKeyPodsRunning) Execute(runtime connector.Runtime) error {
 			return fmt.Errorf("pod %s/%s has not started all containers yet", pod.Namespace, pod.Name)
 		}
 		for _, cStatus := range pod.Status.ContainerStatuses {
-			if cStatus.State.Terminated != nil && cStatus.State.Terminated.ExitCode != 0 {
-				return fmt.Errorf("container %s in pod %s/%s is terminated", cStatus.Name, pod.Namespace, pod.Name)
+			if cStatus.State.Terminated != nil {
+				if cStatus.State.Terminated.ExitCode != 0 {
+					return fmt.Errorf("container %s in pod %s/%s is terminated", cStatus.Name, pod.Namespace, pod.Name)
+				}
+				continue
 			}
 			if cStatus.State.Running == nil {
 				return fmt.Errorf("container %s in pod %s/%s is not running", cStatus.Name, pod.Namespace, pod.Name)
@@ -154,10 +158,11 @@ func (c *CheckPodsRunning) Execute(runtime connector.Runtime) error {
 
 type Download struct {
 	common.KubeAction
-	Version        string
-	BaseDir        string
-	DownloadCdnUrl string
-	UrlOverride    string
+	Version     string
+	BaseDir     string
+	CDNService  string
+	UrlOverride string
+	ReleaseID   string
 }
 
 func (t *Download) Execute(runtime connector.Runtime) error {
@@ -165,21 +170,27 @@ func (t *Download) Execute(runtime connector.Runtime) error {
 		return errors.New("unknown version to download")
 	}
 
-	var osArch = runtime.GetSystemInfo().GetOsArch()
-	var osType = runtime.GetSystemInfo().GetOsType()
-	var osVersion = runtime.GetSystemInfo().GetOsVersion()
-	var osPlatformFamily = runtime.GetSystemInfo().GetOsPlatformFamily()
-	var baseDir = runtime.GetBaseDir()
-	var prePath = path.Join(baseDir, "versions")
-	var wizard = files.NewKubeBinary("install-wizard", osArch, osType, osVersion, osPlatformFamily, t.Version, prePath, t.DownloadCdnUrl)
+	var stem string
+	if t.ReleaseID != "" {
+		stem = fmt.Sprintf("install-wizard-v%s.%s", t.Version, t.ReleaseID)
+	} else {
+		stem = fmt.Sprintf("install-wizard-v%s", t.Version)
+	}
+	wizard := &files.KubeBinary{
+		ID:       "install-wizard",
+		Type:     files.WIZARD,
+		BaseDir:  filepath.Join(runtime.GetBaseDir(), "versions", fmt.Sprintf("v%s", t.Version)),
+		FileName: fmt.Sprintf("%s.tar.gz", stem),
+	}
 
 	if t.UrlOverride == "" {
-		md5URL, _ := url.JoinPath(t.DownloadCdnUrl, version.VENDOR_REPO_PATH, fmt.Sprintf("install-wizard-v%s.md5sum.txt", t.Version))
+		md5URL, _ := url.JoinPath(wizard.GetDownloadMirrors(t.CDNService), version.VENDOR_REPO_PATH, fmt.Sprintf("%s.md5sum.txt", stem))
 		var fetchMd5 = fmt.Sprintf("curl -sSfL %s |awk '{print $1}'", md5URL)
 		md5sum, err := runtime.GetRunner().Cmd(fetchMd5, false, false)
 		if err != nil {
 			return errors.New("get md5sum failed")
 		}
+		wizard.Url, _ = url.JoinPath(wizard.GetDownloadMirrors(t.CDNService), version.VENDOR_REPO_PATH, fmt.Sprintf("%s.tar.gz", stem))
 		wizard.CheckMd5Sum = true
 		wizard.Md5sum = md5sum
 	} else {
@@ -696,18 +707,11 @@ func (a *CheckTerminusStateInHost) Execute(runtime connector.Runtime) error {
 	return nil
 }
 
-type GetPublicNetworkInfo struct {
+type DetectPublicIPAddress struct {
 	common.KubeAction
 }
 
-func (p *GetPublicNetworkInfo) Execute(runtime connector.Runtime) error {
-	if runtime.GetSystemInfo().IsWsl() || runtime.GetSystemInfo().IsDarwin() {
-		if p.KubeConf.Arg.PublicNetworkInfo.PubliclyAccessible {
-			logger.Warnf("environment variable %s is set explicitly but unsupported on this platform, ignoring", common.ENV_PUBLICLY_ACCESSIBLE)
-			p.KubeConf.Arg.PublicNetworkInfo.PubliclyAccessible = false
-		}
-		return nil
-	}
+func (p *DetectPublicIPAddress) Execute(runtime connector.Runtime) error {
 	if util.IsOnAWSEC2() {
 		logger.Info("on AWS EC2 instance, will try to check if a public IP address is bound")
 		awsPublicIP, err := util.GetPublicIPFromAWSIMDS()
@@ -716,7 +720,20 @@ func (p *GetPublicNetworkInfo) Execute(runtime connector.Runtime) error {
 		}
 		if awsPublicIP != nil {
 			logger.Info("retrieved public IP addresses from IMDS")
-			p.KubeConf.Arg.PublicNetworkInfo.AWSPublicIP = awsPublicIP
+			p.KubeConf.Arg.NetworkSettings.CloudProviderPublicIP = awsPublicIP
+			return nil
+		}
+	}
+
+	if util.IsOnTencentCVM() {
+		logger.Info("on Tencent CVM instance, will try to check if a public IP address is bound")
+		tencentPublicIP, err := util.GetPublicIPFromTencentIMDS()
+		if err != nil {
+			return errors.Wrap(err, "failed to get public IP from Tencent")
+		}
+		if tencentPublicIP != nil {
+			logger.Info("retrieved public IP addresses from IMDS")
+			p.KubeConf.Arg.NetworkSettings.CloudProviderPublicIP = tencentPublicIP
 			return nil
 		}
 	}
@@ -727,19 +744,21 @@ func (p *GetPublicNetworkInfo) Execute(runtime connector.Runtime) error {
 	}
 	if len(osPublicIPs) > 0 {
 		logger.Info("detected public IP addresses on local network interface")
-		p.KubeConf.Arg.PublicNetworkInfo.OSPublicIPs = osPublicIPs
+		p.KubeConf.Arg.NetworkSettings.OSPublicIPs = osPublicIPs
 		return nil
 	}
 
-	if !p.KubeConf.Arg.PublicNetworkInfo.PubliclyAccessible {
-		return nil
+	if p.KubeConf.Arg.NetworkSettings.EnableReverseProxy != nil {
+		if !*p.KubeConf.Arg.NetworkSettings.EnableReverseProxy {
+			return nil
+		}
+		externalIP := getMyExternalIPAddr()
+		if externalIP == nil {
+			return errors.New("this installation is explicitly specified to disable reverse proxy but no valid public IP can be found")
+		}
+		p.KubeConf.Arg.NetworkSettings.ExternalPublicIP = externalIP
 	}
 
-	externalIP := getMyExternalIPAddr()
-	if externalIP == nil {
-		return errors.New("this machine is explicitly specified as publicly accessible but no valid public IP can be found")
-	}
-	p.KubeConf.Arg.PublicNetworkInfo.ExternalPublicIP = externalIP
 	return nil
 
 }

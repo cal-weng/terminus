@@ -1,0 +1,37 @@
+apiVersion: v1
+systemEnvs:
+  # the remote service provides a unified base url for all legacy services
+  # including:
+  # DID_GATE_URL,
+  # OLARES_SPACE_URL,
+  # FIREBASE_PUSH_URL,
+  # FRP_LIST_URL,
+  # TAILSCALE_CONTROLPLANE_URL,
+  # MARKET_PROVIDER,
+  # TERMINUS_CERT_SERVICE_API,
+  # TERMINUS_DNS_SERVICE_API
+  - envName: OLARES_SYSTEM_REMOTE_SERVICE
+    default: "https://api.olares.com"
+    type: url
+    editable: true
+    required: true
+  # the legacy DOWNLOAD_CDN_URL
+  - envName: OLARES_SYSTEM_CDN_SERVICE
+    default: "https://cdn.olares.com"
+    type: url
+    editable: true
+    required: true
+  # the legacy OLARES_ROOT_DIR
+  - envName: OLARES_SYSTEM_ROOT_PATH
+    default: /olares
+    editable: false
+    required: true
+  # the legacy OLARES_FS_TYPE
+  - envName: OLARES_SYSTEM_ROOTFS_TYPE
+    default: fs
+    editable: false
+    required: true
+  # the legacy CUDA_VERSION
+  - envName: OLARES_SYSTEM_CUDA_VERSION
+    editable: false
+    required: false

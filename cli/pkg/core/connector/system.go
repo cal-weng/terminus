@@ -44,6 +44,8 @@ func (d DebianVersion) String() string {
 		return "11"
 	case Debian12:
 		return "12"
+	case Debian13:
+		return "13"
 	}
 	return ""
 }
@@ -52,11 +54,13 @@ const (
 	Ubuntu20 UbuntuVersion = "20."
 	Ubuntu22 UbuntuVersion = "22."
 	Ubuntu24 UbuntuVersion = "24."
+	Ubuntu25 UbuntuVersion = "25."
 
 	Debian9  DebianVersion = "9"
 	Debian10 DebianVersion = "10"
 	Debian11 DebianVersion = "11"
 	Debian12 DebianVersion = "12"
+	Debian13 DebianVersion = "13"
 )
 
 type Systems interface {
@@ -114,6 +118,7 @@ type SystemInfo struct {
 	LocalIp    string          `json:"local_ip"`
 	NatGateway string          `json:"nat_gateway"`
 	PkgManager string          `json:"pkg_manager"`
+	IsOIC      bool            `json:"is_oic,omitempty"`
 }
 
 func (s *SystemInfo) IsSupport() error {
@@ -130,13 +135,13 @@ func (s *SystemInfo) IsSupport() error {
 	//}
 
 	if s.IsUbuntu() {
-		if !s.IsUbuntuVersionEqual(Ubuntu20) && !s.IsUbuntuVersionEqual(Ubuntu22) && !s.IsUbuntuVersionEqual(Ubuntu24) {
+		if !s.IsUbuntuVersionEqual(Ubuntu22) && !s.IsUbuntuVersionEqual(Ubuntu24) && !s.IsUbuntuVersionEqual(Ubuntu25) {
 			return fmt.Errorf("unsupported ubuntu os version '%s'", s.GetOsVersion())
 		}
 	}
 
 	if s.IsDebian() {
-		if !s.IsDebianVersionEqual(Debian11) && !s.IsDebianVersionEqual(Debian12) {
+		if !s.IsDebianVersionEqual(Debian12) && !s.IsDebianVersionEqual(Debian13) {
 			return fmt.Errorf("unsupported debian os version '%s'", s.GetOsVersion())
 		}
 	}
@@ -217,7 +222,7 @@ func (s *SystemInfo) IsPveOrPveLxc() bool {
 }
 
 func (s *SystemInfo) IsWsl() bool {
-	return s.HostInfo.OsPlatform == common.WSL
+	return s.HostInfo.OsPlatform == common.WSL && !s.IsOIC
 }
 
 func (s *SystemInfo) IsRaspbian() bool {
@@ -249,7 +254,9 @@ func (s *SystemInfo) GetDebianVersionCode() string {
 		return ""
 	}
 
-	if strings.Contains(s.HostInfo.OsVersion, string(Debian12)) {
+	if strings.Contains(s.HostInfo.OsVersion, string(Debian13)) {
+		return "trixie"
+	} else if strings.Contains(s.HostInfo.OsVersion, string(Debian12)) {
 		return "bookworm"
 	} else if strings.Contains(s.HostInfo.OsVersion, string(Debian11)) {
 		return "bullseye"
@@ -301,6 +308,8 @@ func (s *SystemInfo) Print() {
 	fmt.Printf("fs info, fs: %s, zfsmount: %s\n", s.FsInfo.Type, s.FsInfo.DefaultZfsPrefixName)
 	fmt.Printf("mem info, total: %s, free: %s\n", util.FormatBytes(int64(s.MemoryInfo.Total)), util.FormatBytes(int64(s.MemoryInfo.Free)))
 	fmt.Printf("cgroup info, cpu: %d, mem: %d\n", s.CgroupInfo.CpuEnabled, s.CgroupInfo.MemoryEnabled)
+	fmt.Printf("oic: %t\n", s.IsOIC)
+	fmt.Printf("in wsl: %t\n", s.IsWsl())
 }
 
 func GetSystemInfo() *SystemInfo {

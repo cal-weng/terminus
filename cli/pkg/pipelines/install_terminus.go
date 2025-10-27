@@ -1,16 +1,12 @@
 package pipelines
 
 import (
-	"encoding/base64"
 	"fmt"
-	"io/ioutil"
 	"path"
-	"path/filepath"
 
 	"github.com/pkg/errors"
 
 	"github.com/beclab/Olares/cli/cmd/ctl/options"
-	ctrl "github.com/beclab/Olares/cli/controllers"
 	"github.com/beclab/Olares/cli/pkg/common"
 	"github.com/beclab/Olares/cli/pkg/core/logger"
 	"github.com/beclab/Olares/cli/pkg/phase"
@@ -29,7 +25,6 @@ func CliInstallTerminusPipeline(opts *options.CliTerminusInstallOptions) error {
 	arg.SetOlaresVersion(opts.Version)
 	arg.SetMinikubeProfile(opts.MiniKubeProfile)
 	arg.SetStorage(getStorageValueFromEnv())
-	arg.SetReverseProxy()
 	arg.SetTokenMaxAge()
 	arg.SetSwapConfig(opts.SwapConfig)
 	if err := arg.SwapConfig.Validate(); err != nil {
@@ -37,6 +32,9 @@ func CliInstallTerminusPipeline(opts *options.CliTerminusInstallOptions) error {
 	}
 	if opts.WithJuiceFS {
 		arg.WithJuiceFS = true
+	}
+	if opts.EnableReverseProxy != nil {
+		arg.NetworkSettings.EnableReverseProxy = opts.EnableReverseProxy
 	}
 	runtime, err := common.NewKubeRuntime(common.AllInOne, *arg)
 	if err != nil {
@@ -51,30 +49,6 @@ func CliInstallTerminusPipeline(opts *options.CliTerminusInstallOptions) error {
 	logger.InfoInstallationProgress("Start to Install Olares ...")
 	if err := p.Start(); err != nil {
 		return err
-	}
-
-	if !runtime.GetSystemInfo().IsWindows() {
-		if runtime.Arg.InCluster {
-			if err := ctrl.UpdateStatus(runtime); err != nil {
-				logger.Errorf("failed to update status: %v", err)
-				return err
-			}
-			kkConfigPath := filepath.Join(runtime.GetWorkDir(), fmt.Sprintf("config-%s", runtime.ObjName))
-			if config, err := ioutil.ReadFile(kkConfigPath); err != nil {
-				logger.Errorf("failed to read kubeconfig: %v", err)
-				return err
-			} else {
-				runtime.Kubeconfig = base64.StdEncoding.EncodeToString(config)
-				if err := ctrl.UpdateKubeSphereCluster(runtime); err != nil {
-					logger.Errorf("failed to update kubesphere cluster: %v", err)
-					return err
-				}
-				if err := ctrl.SaveKubeConfig(runtime); err != nil {
-					logger.Errorf("failed to save kubeconfig: %v", err)
-					return err
-				}
-			}
-		}
 	}
 
 	return nil

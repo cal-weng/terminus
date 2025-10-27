@@ -7,8 +7,8 @@
 ![Build Status](https://github.com/beclab/olares/actions/workflows/release-daily.yaml/badge.svg)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/beclab/olares)](https://github.com/beclab/olares/releases)
 [![GitHub Repo stars](https://img.shields.io/github/stars/beclab/olares?style=social)](https://github.com/beclab/olares/stargazers)
-[![Discord](https://img.shields.io/badge/Discord-7289DA?logo=discord&logoColor=white)](https://discord.com/invite/BzfqrgQPDK)
-[![License](https://img.shields.io/badge/License-Olares-darkblue)](https://github.com/beclab/olares/blob/main/LICENSE.md)
+[![Discord](https://img.shields.io/badge/Discord-7289DA?logo=discord&logoColor=white)](https://discord.gg/olares)
+[![License](https://img.shields.io/badge/License-AGPL--3.0-blue)](https://github.com/beclab/olares/blob/main/LICENSE)
 
 <p>
   <a href="./README.md"><img alt="Readme in English" src="https://img.shields.io/badge/English-FFFFFF"></a>
@@ -21,7 +21,7 @@
 <p align="center">
   <a href="https://olares.com">ウェブサイト</a> ·
   <a href="https://docs.olares.com">ドキュメント</a> ·
-  <a href="https://olares.com/larepass">LarePassをダウンロード</a> ·
+  <a href="https://larepass.olares.com">LarePassをダウンロード</a> ·
   <a href="https://github.com/beclab/apps">Olaresアプリ</a> ·
   <a href="https://space.olares.com">Olares Space</a>
 </p>
@@ -30,7 +30,7 @@
 >
 >*今こそ、変革の時です。*
 
-![自身のデジタル](https://file.bttcdn.com/github/olares/public-cloud-to-personal-cloud.jpg)
+![自身のデジタル](https://app.cdn.olares.com/github/olares/public-cloud-to-personal-cloud.jpg)
 
 私たちは、あなたが自身のデジタルライフをコントロールする基本的な権利を有すると確信しています。この権利を守る最も効果的な方法は、あなたのデータをローカルの、あなた自身のハードウェア上でホストすることです。
 
@@ -42,9 +42,9 @@ Olaresは、あなたが自身のデジタル資産をローカルで容易に�
 
 パブリッククラウドは、IaaS (Infrastructure as a Service)、PaaS (Platform as a Service)、SaaS (Software as a Service) といったサービスレイヤーで構成されています。Olaresは、これら各レイヤーに対するオープンソースの代替ソリューションを提供しています。
 
-  ![Olaresのアーキテクチ](https://file.bttcdn.com/github/olares/olares-architecture.jpg)
+  ![Olaresのアーキテクチ](https://app.cdn.olares.com/github/olares/olares-architecture.jpg)
 
-各コンポーネントの詳細については、[Olares アーキテクチャ](https://docs.olares.com/manual/system-architecture.html)（英語版）をご参照ください。
+各コンポーネントの詳細については、[Olares アーキテクチャ](https://docs.olares.com/manual/concepts/system-architecture.html)（英語版）をご参照ください。
 
 > 🔍**OlaresとNASの違いは何ですか？**
 >
@@ -67,15 +67,15 @@ Olaresは、セキュリティ、使いやすさ、開発の柔軟性を向上�
 
 | **デスクトップ：馴染みやすく効率的なアクセスポイント** |  **ファイルマネージャー：データを安全に保管** |
 | :--------: | :-------: |
-| ![桌面](https://file.bttcdn.com/github/terminus/v2/desktop.jpg) | ![文件](https://file.bttcdn.com/github/terminus/v2/files.jpg) |
+| ![桌面](https://app.cdn.olares.com/github/terminus/v2/desktop.jpg) | ![文件](https://app.cdn.olares.com/github/terminus/v2/files.jpg) |
 | **Vault：安心のパスワード管理**|**マーケット：コントロール可能なアプリエコシステム** |
-| ![vault](https://file.bttcdn.com/github/terminus/v2/vault.jpg) | ![市场](https://file.bttcdn.com/github/terminus/v2/market.jpg) |
+| ![vault](https://app.cdn.olares.com/github/terminus/v2/vault.jpg) | ![市场](https://app.cdn.olares.com/github/terminus/v2/market.jpg) |
 | **Wise：あなただけのデジタルガーデン** | **設定：Olaresを効率的に管理** |
-| ![设置](https://file.bttcdn.com/github/terminus/v2/wise.jpg) | ![](https://file.bttcdn.com/github/terminus/v2/settings.jpg) |
+| ![设置](https://app.cdn.olares.com/github/terminus/v2/wise.jpg) | ![](https://app.cdn.olares.com/github/terminus/v2/settings.jpg) |
 | **ダッシュボード：Olaresを継続的に監視** | **プロフィール：ユニークなパーソナルページ** |
-| ![面板](https://file.bttcdn.com/github/terminus/v2/dashboard.jpg) | ![profile](https://file.bttcdn.com/github/terminus/v2/profile.jpg) |
+| ![面板](https://app.cdn.olares.com/github/terminus/v2/dashboard.jpg) | ![profile](https://app.cdn.olares.com/github/terminus/v2/profile.jpg) |
 | **Studio：開発、デバッグ、デプロイをワンストップで**|**コントロールパネル：Kubernetesクラスターを簡単に管理** |
-| ![Devbox](https://file.bttcdn.com/github/terminus/v2/devbox.jpg) | ![控制中心](https://file.bttcdn.com/github/terminus/v2/controlhub.jpg)|
+| ![Devbox](https://app.cdn.olares.com/github/terminus/v2/devbox.jpg) | ![控制中心](https://app.cdn.olares.com/github/terminus/v2/controlhub.jpg)|
 
 ## なぜOlaresなのか？
 
@@ -108,8 +108,7 @@ Olaresは以下のLinuxプラットフォームで動作検証を完了してい
 自分のデバイスでOlaresを始めるには、[はじめにガイド](https://docs.olares.com/manual/get-started/)に従ってステップバイステップの手順を確認してください。
 
 
-## プロジェクトナビゲーション
-
+## プロジェクトナビゲーションx
 このセクションでは、Olares リポジトリ内の主要なディレクトリをリストアップしています：
 
 * **[`apps`](./apps)**: システムアプリケーションのコードが含まれており、主に `larepass` 用です。
@@ -136,7 +135,7 @@ https://docs.olares.com/developer/contribute/olares.html
 
 * [**GitHub Discussion**](https://github.com/beclab/olares/discussions). フィードバックの共有や質問に最適です。
 * [**GitHub Issues**](https://github.com/beclab/olares/issues). Olaresの使用中に遭遇したバグの報告や機能提案の提出に最適です。 
-* [**Discord**](https://discord.com/invite/BzfqrgQPDK). Olaresに関するあらゆることを共有するのに最適です。
+* [**Discord**](https://discord.gg/olares). Olaresに関するあらゆることを共有するのに最適です。
 
 ## 特別な感謝
 

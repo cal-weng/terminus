@@ -61,7 +61,7 @@ outline: [2, 3]
     - name: desktop-frontend-dev # 与 deployment 上的 annotation 一致
       host: desktop-svc-dev # 与上面的 service 名字一致
       port: 80
-      icon: https://file.bttcdn.com/appstore/default/defaulticon.webp
+      icon: https://app.cdn.olares.com/appstore/default/defaulticon.webp
       title: Desktop-dev
       authLevel: private
       openMethod: default
@@ -139,7 +139,7 @@ spec:
         app: desktop-dev
     spec:
       volumes:
-      - name: terminus-sidecar-config
+      - name: olares-sidecar-config
         configMap:
           name: sidecar-configs
           items:
@@ -161,7 +161,7 @@ spec:
           path: {{ .Values.userspace.appCache }}/desktop-dev
 
       initContainers:
-        - name: terminus-sidecar-init
+        - name: olares-sidecar-init
           image: openservicemesh/init:v1.2.3
           imagePullPolicy: IfNotPresent
           securityContext:
@@ -213,7 +213,7 @@ spec:
             mountPath: /opt/code
           - name: appcache
             mountPath: /root/.config
-        - name: terminus-envoy-sidecar
+        - name: olares-envoy-sidecar
           image: envoyproxy/envoy-distroless:v1.25.2
           imagePullPolicy: IfNotPresent
           securityContext:
@@ -225,7 +225,7 @@ spec:
           - name: proxy-inbound
             containerPort: 15003
           volumeMounts:
-          - name: terminus-sidecar-config
+          - name: olares-sidecar-config
             readOnly: true
             mountPath: /etc/envoy/envoy.yaml
             subPath: envoy.yaml

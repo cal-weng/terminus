@@ -1,6 +1,6 @@
 ---
 outline: [2, 3]
-description: LarePass 用户文档。了解 LarePass 的核心功能与使用方法，包括账户管理、文件同步、设备与网络管理、密码管理，内容收藏等，并提供下载与安装指南。
+description: LarePass 用户文档。了解 LarePass 的核心功能与使用方法，包括账户管理、文件同步、设备与网络管理、系统升级、密码管理，内容收藏等，并提供下载与安装指南。
 ---
 
 # LarePass 使用文档
@@ -26,14 +26,13 @@ description: LarePass 用户文档。了解 LarePass 的核心功能与使用方
 ### 设备管理
 激活并管理 Olares 设备，通过 LarePass VPN 安全连接。
 - [激活 Olares 设备](activate-olares.md)
+- [升级 Olares](manage-olares.md#升级-olares)
 - [双因素登录 Olares](activate-olares.md#使用-larepass-进行双因素验证)
 - [管理 Olares](manage-olares.md)
 - [切换有线/无线网络](manage-olares.md#有线切换至无线)
 
 ### 安全文件访问与同步
-跨设备访问并同步 Olares 文件。
 - [使用 LarePass 管理文件](manage-files.md)
-- [同步与共享文件](sync-share.md)
 
 ### 密码与密钥管理
 使用 Vault 自动填充凭证、存储密码并生成 2FA 代码。
@@ -67,7 +66,7 @@ description: LarePass 用户文档。了解 LarePass 的核心功能与使用方
 
 <template #离线安装>
 
-1. 访问 [olares.com/larepass](https://olares.com/larepass) 下载扩展 ZIP 包。
+1. 访问 [LarePass 网站](https://olares.cn/olares) 下载扩展 ZIP 包。
 2. 在浏览器地址栏输入 `chrome://extensions/`。
 3. 打开右上角 **开发者模式**。
 4. 点击 **加载已解压的扩展程序**，选择解压后的 LarePass 文件夹。

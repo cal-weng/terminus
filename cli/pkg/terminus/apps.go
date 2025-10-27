@@ -82,10 +82,10 @@ func (u *PrepareAppValues) Execute(runtime connector.Runtime) error {
 	defer cancel()
 
 	ns := fmt.Sprintf("user-space-%s", u.KubeConf.Arg.User.UserName)
-	redisPassword, err := getRedisPassword(client, runtime)
-	if err != nil {
-		return err
-	}
+	//redisPassword, err := getRedisPassword(client, runtime)
+	//if err != nil {
+	//	return err
+	//}
 
 	bfDocUrl, _ := getDocUrl(ctx, runtime)
 	bflNodeName, err := getBflPod(ctx, ns, client, runtime)
@@ -98,7 +98,7 @@ func (u *PrepareAppValues) Execute(runtime connector.Runtime) error {
 	}
 	fsType := storage.GetRootFSType()
 	gpuType := getGpuType(u.KubeConf.Arg.GPU.Enable)
-	appValues := getAppSecrets(getAppPatches())
+	appValues := getAppSecrets()
 
 	var values = map[string]interface{}{
 		"bfl": map[string]interface{}{
@@ -131,11 +131,10 @@ func (u *PrepareAppValues) Execute(runtime connector.Runtime) error {
 		"gpu":          gpuType,
 		"fs_type":      fsType,
 		"os":           appValues,
-		"kubesphere": map[string]interface{}{
-			"redis_password": redisPassword,
-		},
-		common.HelmValuesKeyTerminusGlobalEnvs: common.TerminusGlobalEnvs,
-		common.HelmValuesKeyOlaresRootFSPath:   storage.OlaresRootDir,
+		//"kubesphere": map[string]interface{}{
+		//	"redis_password": redisPassword,
+		//},
+		common.HelmValuesKeyOlaresRootFSPath: storage.OlaresRootDir,
 	}
 
 	u.ModuleCache.Set(common.CacheAppValues, values)
@@ -276,7 +275,7 @@ func getBflAnnotation(ctx context.Context, ns string, client clientset.Client, r
 	return sts.Annotations, nil
 }
 
-func getAppSecrets(patches map[string]map[string]interface{}) map[string]interface{} {
+func getAppSecrets() map[string]interface{} {
 	var secrets = make(map[string]interface{})
 	for _, app := range BuiltInApps {
 		s, _ := utils.GeneratePassword(16)
@@ -284,23 +283,8 @@ func getAppSecrets(patches map[string]map[string]interface{}) map[string]interfa
 		v["appKey"] = fmt.Sprintf("bytetrade_%s_%d", app, utils.Random())
 		v["appSecret"] = s
 
-		p, ok := patches[app]
-		if ok && p != nil {
-			for pk, pv := range p {
-				v[pk] = pv
-			}
-		}
-
 		secrets[app] = v
 	}
 
 	return secrets
-}
-
-func getAppPatches() map[string]map[string]interface{} {
-	var patches = make(map[string]map[string]interface{})
-	var value = make(map[string]interface{})
-	value["marketProvider"] = os.Getenv("MARKET_PROVIDER")
-	patches["appstore"] = value
-	return patches
 }

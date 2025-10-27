@@ -78,6 +78,8 @@ type state struct {
 	FRPEnable        string `json:"frpEnable"`
 
 	ContainerMode *string `json:"containerMode,omitempty"`
+
+	Pressure []utils.NodePressure `json:"pressures,omitempty"`
 }
 
 var CurrentState state
@@ -340,6 +342,18 @@ func CheckCurrentStatus(ctx context.Context) error {
 		return err
 	}
 
+	pressure, err := utils.GetNodesPressure(ctx, kubeClient)
+	if err != nil {
+		klog.Error("get nodes pressure error, ", err)
+	} else {
+		// update node pressure of current node
+		if p, ok := pressure[*CurrentState.HostName]; ok && len(p) == 0 {
+			CurrentState.Pressure = p
+		} else {
+			CurrentState.Pressure = nil
+		}
+	}
+
 	if CurrentState.InstallFinishedTime != nil {
 		CurrentState.InstalledTime = pointer.Int64(CurrentState.InstallFinishedTime.Unix())
 	} else {
@@ -462,6 +476,11 @@ func WatchStatus(ctx context.Context, watchers []watcher.Watcher, postWatch func
 			}
 
 			for _, w := range watchers {
+				if w == nil {
+					klog.Warning("watcher is nil")
+					continue
+				}
+
 				w.Watch(ctx)
 			}
 

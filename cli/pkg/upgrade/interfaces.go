@@ -13,7 +13,9 @@ type upgrader interface {
 	UpgradeUserComponents() []task.Interface
 	UpdateReleaseFile() []task.Interface
 	UpgradeSystemComponents() []task.Interface
+	UpdateOlaresVersion() []task.Interface
 	PostUpgrade() []task.Interface
+	AddedBreakingChange() bool
 }
 
 type breakingUpgrader interface {

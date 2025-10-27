@@ -25,19 +25,19 @@ Olares Space is a cloud hosting service for Olares that shares the same account 
 
 ### Step 2. Authorize Olares Space
 
-1. In the LarePass app, go to **Settings** > **Integration**.
+1. In the LarePass app, go to **Settings** > **LarePass settings** > **Integration**.
 2. Tap <i class="material-symbols-outlined">add</i> in the top-right corner and select **Space** to add your Olares Space account.
 
 ### Step 3. Associate Olares ID
 Associating your Olares ID allows you to import a blockchain wallet, which is necessary for using NFT images as unique avatars in your profile.
 
-1. Open the Settings app from the Dock or Launchpad.
+1. In Olares, open the Settings app from the Dock or Launchpad.
 2. Select **Integration** from the left sidebar.
 3. Click on the Olares Space card on the right to view details.
 4. Click **Bind**. This will trigger a confirmation prompt in LarePass app.
-5. Open the LarePass app. You should see a confirmation prompt. If not:
+5. Open the LarePass app. A confirmation prompt should appear. If not:
 
-   a. Go to **Settings** > **Integration**.
+   a. Go to **Settings** > **LarePass settings** > **Integration**.
 
    b. Tap the Olares Space card.
 
@@ -50,36 +50,34 @@ OAuth-based integrations like Google Drive and Dropbox require initial setup via
 
 1. Open LarePass on your mobile device.
 
-2. Tap **Settings** > **Integration**, then tap <i class="material-symbols-outlined">add</i> in the top-right corner.
+2. Tap **Settings** > **LarePass settings** > **Integration**, then tap <i class="material-symbols-outlined">add</i> in the top-right corner.
 
 3. Select either Google Drive or Dropbox.
 
 4. Follow the login prompts to authorize your account.
 
-Once authorized, you'll see the connected account in the integration list. You can now access the storage in Files.
+Once authorized, you'll see the connected account in the integration list. You can select the storage for [Olares backup](../olares/settings/backup.md) or access the storage in **Files** > **Cloud Storage** in Olares. 
 
 ## Add a cloud storage using API-keys
 
 Services like AWS S3 and Tencent Cloud COS require setup using API keys (Access Key & Secret Key). You can do this directly from the LarePass app or from the **Integration** settings within Olares:
 
 1. Open LarePass on your mobile device.
-2. Tap **Settings** > **Integration**, then tap <i class="material-symbols-outlined">add</i> in the top-right corner.
+2. Tap **Settings** > **LarePass settings** > **Integration**, then tap <i class="material-symbols-outlined">add</i> in the top-right corner.
 3. Select AWS S3 or Tencent COS.
 4. Enter your Access Key, Secret Key, and other required credentials, then tap **Confirm**.
 
-Once configured, you'll see the connected service in the integration list. And you can access the cloud storage through Files.
-
 Alternatively, you can configure these integrations directly within [Olares Settings](/manual/olares/settings/integrations.md). 
 
+Once authorized, you'll see the connected account in the integration list. You can select the storage for [Olares backup](../olares/settings/backup.md) or access the storage in **Files** > **Cloud Storage** in Olares.
 
 ## Disconnect integrations
 ::: warning
-Disconnecting Olares Space may affect your ability to manage devices, and access cloud backups through the Olares Space interface.
-You can always reconnect later if needed.
+Disconnecting an integration may affect the ability to manage devices and cloud backups. You can always reconnect later if needed.
 :::
 
 To disconnect an integration from LarePass:
 
-1. Open LarePass app, and go to **Settings** > **Integration**.
-2. Tap on the integration you wish to remove.
+1. Open LarePass app, and go to **Settings** > **LarePass settings** > **Integration**.
+2. Tap the integration you want to remove.
 3. Tap <i class="material-symbols-outlined">more_horiz</i> in the top-right corner, and tap **Delete**.

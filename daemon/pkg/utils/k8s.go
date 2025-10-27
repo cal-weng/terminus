@@ -25,6 +25,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 
 	sysv1 "bytetrade.io/web3os/app-service/api/sys.bytetrade.io/v1alpha1"
+	"bytetrade.io/web3os/app-service/pkg/generated/clientset/versioned"
 )
 
 const (
@@ -61,6 +62,22 @@ func GetDynamicClient() (dynamic.Interface, error) {
 	}
 
 	return client, nil
+}
+
+func GetAppClientSet() (versioned.Clientset, error) {
+	config, err := ctrl.GetConfig()
+	if err != nil {
+		klog.Error("get k8s config error, ", err)
+		return versioned.Clientset{}, err
+	}
+
+	client, err := versioned.NewForConfig(config)
+	if err != nil {
+		klog.Error("get app clientset error, ", err)
+		return versioned.Clientset{}, err
+	}
+
+	return *client, nil
 }
 
 func IsTerminusInitialized(ctx context.Context, client dynamic.Interface) (initialized bool, failed bool, err error) {
@@ -140,6 +157,11 @@ func IsIpChanged(ctx context.Context, installed bool) (bool, error) {
 		return false, err
 	}
 
+	masterIpFromETCD, err := MasterNodeIp(installed)
+	if err != nil {
+		return false, err
+	}
+
 	for _, ip := range ips {
 		hostIps, err := nets.LookupHostIps()
 		if err != nil {
@@ -148,10 +170,19 @@ func IsIpChanged(ctx context.Context, installed bool) (bool, error) {
 
 		for _, hostIp := range hostIps {
 			if hostIp == ip.IP {
+				klog.V(8).Info("host ip is the same as internal ip of interface, ", hostIp, ", ", ip.IP)
 
 				if !installed {
 					// terminus not installed
-					return false, nil
+					if masterIpFromETCD == "" {
+						return false, nil
+					}
+
+					if masterIpFromETCD == ip.IP {
+						return false, nil
+					}
+
+					return true, nil
 				}
 
 				kubeClient, err := GetKubeClient()
@@ -162,8 +193,18 @@ func IsIpChanged(ctx context.Context, installed bool) (bool, error) {
 
 				_, nodeIp, nodeRole, err := GetThisNodeName(ctx, kubeClient)
 				if err != nil {
-					klog.Error("get this node name error, ", err)
-					return false, nil
+					klog.Warning("get this node name error, ", err, ", try to compare with etcd ip")
+					if masterIpFromETCD == "" {
+						klog.Info("master node ip not found, mybe it's a worker node")
+						return false, nil
+					}
+
+					if masterIpFromETCD == ip.IP {
+						return false, nil
+					}
+
+					klog.Info("master node ip from etcd is not the same as internal ip of interface, ", masterIpFromETCD, ", ", hostIp, ", ", ip.IP)
+					return true, nil
 
 				}
 
@@ -176,12 +217,13 @@ func IsIpChanged(ctx context.Context, installed bool) (bool, error) {
 					return false, nil
 				}
 
-				klog.Info("get node ip, ", nodeIp, ", ", hostIp, ", ", ip.IP)
-
+				klog.Info("node is master and node ip is not the same as internal ip of interface, ", nodeIp, ", ", hostIp, ", ", ip.IP)
+				return true, nil
 			}
-		}
-	}
+		} // end for host ips
+	} // end for interface ips
 
+	klog.Info("no host ip is the same as internal ip of interface, ", ips)
 	return true, nil
 }
 
@@ -490,4 +532,53 @@ func GetUserspacePvcHostPath(ctx context.Context, user string, client kubernetes
 	}
 
 	return hostpath, nil
+}
+
+func GetNodesPressure(ctx context.Context, client kubernetes.Interface) (map[string][]NodePressure, error) {
+	nodes, err := client.CoreV1().Nodes().List(ctx, metav1.ListOptions{})
+	if err != nil {
+		klog.Error("list nodes error, ", err)
+		return nil, err
+	}
+
+	status := make(map[string][]NodePressure)
+	for _, node := range nodes.Items {
+		for _, condition := range node.Status.Conditions {
+			if condition.Type != corev1.NodeReady && condition.Status == corev1.ConditionTrue {
+				status[node.Name] = append(status[node.Name], NodePressure{Type: condition.Type, Message: condition.Message})
+			}
+		}
+	}
+
+	return status, nil
+}
+
+func GetApplicationUrlAll(ctx context.Context) ([]string, error) {
+	var urls []string
+
+	clientset, err := GetAppClientSet()
+	if err != nil {
+		klog.Error("get app clientset error, ", err)
+		return nil, err
+	}
+
+	apps, err := clientset.AppV1alpha1().Applications().List(ctx, metav1.ListOptions{})
+	if err != nil {
+		klog.Error("list applications error, ", err)
+		return nil, err
+	}
+
+	for _, app := range apps.Items {
+		entrances, err := app.GenEntranceURL(ctx)
+		if err != nil {
+			klog.Error("generate application entrance url error, ", err, ", ", app.Name)
+			continue
+		}
+
+		for _, entrance := range entrances {
+			urls = append(urls, entrance.URL)
+		}
+	}
+
+	return urls, nil
 }

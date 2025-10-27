@@ -3,30 +3,26 @@ import { defineConfig, type DefaultTheme } from "vitepress";
 const side = {
   "/zh/manual/": [
     {
-      text: "文档站",
-      link: "/zh/manual/docs-home",
+      text: "Olares 是什么？",
+      link: "/zh/manual/overview",
       items: [
         // { text: "应用场景", link: "/zh/manual/why-olares" },
         //{ text: "功能对比", link: "/zh/manual/feature-overview" },
-        { text: "系统架构", link: "/zh/manual/system-architecture" },
         { text: "比较 Olares 和 NAS", link: "/zh/manual/olares-vs-nas" },
-        {
-          text: "帮助与支持",
-          collapsed: true,
-          items: [
-            { text: "常见问题", link: "/zh/manual/help/faqs" },
-            {
-              text: "技术支持",
-              link: "/zh/manual/help/request-technical-support",
-            },
+        {text: "帮助与支持", link: "/zh/manual/help/request-technical-support",}
+        //      collapsed: true,
+        //      items: [
+        //     { text: "常见问题", link: "/zh/manual/help/faqs" },
+        //     {
+        //       text: "技术支持",
+      //      link: "/zh/manual/help/request-technical-support",
+        //       },
             //     {
             //       text: "Troubleshooting Guide",
             //       link: "/zh/manual/help/troubleshooting-guide",
             //     },
           ],
         },
-      ],
-    },
     {
       text: "快速开始",
       collapsed: false,
@@ -40,6 +36,74 @@ const side = {
         {
           text: "安装激活",
           link: "/zh/manual/get-started/install-olares",
+          collapsed: true,
+          items: [
+            {
+              text: "Linux",
+              collapsed: true,
+              items: [
+                {
+                  text: "使用 ISO 镜像（推荐）",
+                  link: "/zh/manual/get-started/install-linux-iso",
+                },
+                {
+                  text: "使用脚本",
+                  link: "/zh/manual/get-started/install-linux-script",
+                },
+                {
+                  text: "使用 Docker Compose",
+                  link: "/zh/manual/get-started/install-linux-docker",
+                },
+              ],
+            },
+            {
+              text: "macOS",
+              collapsed: true,
+              items: [
+                {
+                  text: "使用脚本",
+                  link: "/zh/manual/get-started/install-mac-script",
+                },
+                {
+                  text: "使用 Docker 镜像",
+                  link: "/zh/manual/get-started/install-mac-docker",
+                },
+              ],
+            },
+            {
+              text: "Windows (WSL 2)",
+              collapsed: true,
+              items: [
+                {
+                  text: "使用脚本",
+                  link: "/zh/manual/get-started/install-windows-script",
+                },
+                {
+                  text: "使用 Docker 镜像",
+                  link: "/zh/manual/get-started/install-windows-docker",
+                },
+              ],
+            },
+            {
+              text: "PVE",
+              collapsed: true,
+              items: [
+                {
+                  text: "使用脚本",
+                  link: "/zh/manual/get-started/install-pve-script",
+                },
+                {
+                  text: "使用 ISO 镜像",
+                  link: "/zh/manual/get-started/install-pve-iso",
+                },
+                { text: "LXC", link: "/zh/manual/get-started/install-lxc" },
+              ],
+            },
+            {
+              text: "树莓派",
+              link: "/zh/manual/get-started/install-raspberry-pi",
+            },
+          ],
         },
         {
           text: "备份助记词",
@@ -74,14 +138,13 @@ const side = {
             {text: "管理 Olares", link:"/zh/manual/larepass/manage-olares"},
           ],
         },
-        {
-          text: "管理文件",
-          collapsed: true,
-          items: [
-            {text: "常用文件操作", link:"/zh/manual/larepass/manage-files"},
-            {text: "同步与共享", link:"/zh/manual/larepass/sync-share"}
-          ]
-        },
+        {text: "管理文件", link:"/zh/manual/larepass/manage-files"},
+      //    collapsed: true,
+        //    items: [
+        //    {text: "常用文件操作", link:"/zh/manual/larepass/manage-files"},
+        //    {text: "同步与共享", link:"/zh/manual/larepass/sync-share"}
+      //  ]
+        // },
         {
           text: "管理密码",
           collapsed: true,
@@ -112,10 +175,10 @@ const side = {
               "text": "基本文件操作",
               "link": "/zh/manual/olares/files/add-edit-download"
             },
-            {
-              "text": "同步与共享",
-              "link": "/zh/manual/larepass/sync-share"
-            },
+            //{
+            //   "text": "同步与共享",
+          //  "link": "/zh/manual/larepass/sync-share"
+            //  },
             {
               "text": "挂载 SMB",
               "link": "/zh/manual/olares/files/mount-SMB"
@@ -123,8 +186,8 @@ const side = {
             {
               "text": "挂载云存储",
               "link": "/zh/manual/olares/files/mount-cloud-storage"
-            }
-          ]
+            },
+          ],
         },
         {
           "text": "Vault",
@@ -178,16 +241,24 @@ const side = {
           "link": "/zh/manual/olares/controlhub/",
           "items": [
             {
-              "text": "熟悉控制面板",
-              "link": "/zh/manual/olares/controlhub/navigate-control-hub"
+              "text": "管理工作负载",
+              "link": "/zh/manual/olares/controlhub/manage-workload"
             },
             {
-              "text": "编辑系统资源",
-              "link": "/zh/manual/olares/controlhub/edit-resource"
+              "text": "管理容器",
+              "link": "/zh/manual/olares/controlhub/manage-container"
             },
             {
-              "text": "查看容器状态",
-              "link": "/zh/manual/olares/controlhub/view-container"
+              "text": "管理资源配置",
+              "link": "/zh/manual/olares/controlhub/manage-resource"
+            },
+            {
+              "text": "管理中间件",
+              "link": "/zh/manual/olares/controlhub/manage-middleware"
+            },
+            {
+              text: "访问终端",
+              link: "/zh/manual/olares/controlhub/terminal",
             },
           ],
         },
@@ -196,14 +267,7 @@ const side = {
           "collapsed": true,
           "link": "/zh/manual/olares/settings/",
           "items": [
-            {
-              "text": "我的 Olares",
-              "collapsed": true,
-              "items": [
-                {text: "账户与设备", link: "/zh/manual/olares/settings/my-olares"},
-                {text: "更新系统", link: "/zh/manual/olares/settings/update"},
-              ],
-            },
+            {"text": "我的 Olares", link: "/zh/manual/olares/settings/my-olares"},
             {
               "text": "管理用户",
               "collapsed": true,
@@ -233,16 +297,16 @@ const side = {
               ],
               },
             {
-              "text": "管理集成", 
+              "text": "管理集成",
               "link":"/zh/manual/olares/settings/integrations",
              },
              {
-              "text": "自定义外观", 
+              "text": "自定义外观",
               "link":"/zh/manual/olares/settings/language-appearance",
              },
             {text: "管理 VPN", link: "/zh/manual/olares/settings/remote-access",},
             {
-              "text": "配置网络", 
+              "text": "配置网络",
               "collapsed": true,
               "items": [
                 {
@@ -250,12 +314,13 @@ const side = {
                   "link": "/zh/manual/olares/settings/change-frp",
                 },
                 {
-                  "text": "设置 hosts 文件", 
+                  "text": "设置 hosts 文件",
                   "link":"/zh/manual/olares/settings/set-up-hosts",
                 },
               ],
              },
-            {text: "管理 GPU", link: "/zh/manual/olares/settings/gpu-resource",},
+            {text: "管理 GPU", link: "/zh/manual/olares/settings/gpu-resource"},
+            {text: "视频设置", link: "/zh/manual/olares/settings/video"},
             {
               "text": "备份与恢复",
               "collapsed": true,
@@ -292,6 +357,10 @@ const side = {
           text: "设置 SMTP",
           link: "/zh/manual/best-practices/set-up-SMTP-service",
         },
+        {
+          text: "在 Olares 中扩展存储空间",
+          link: "/zh/manual/best-practices/expand-storage-in-olares",
+        },
       ],
     },
     {
@@ -299,7 +368,7 @@ const side = {
       collapsed: true,
       link: "/zh/manual/concepts/",
       items: [
-        { text: "架构", link: "/zh/manual/concepts/architecture" },
+        { text: "系统架构", link: "/zh/manual/concepts/system-architecture" },
         { text: "Olares ID",
           link: "/zh/manual/concepts/olares-id",
           collapsed: true,
@@ -320,10 +389,10 @@ const side = {
               text: "自治声誉",
               link: "/zh/manual//concepts/reputation",
             },
-            {
-              text: "主权网络",
-              link: "/zh/manual//concepts/self-sovereign-network",
-            },
+            //      {
+            //     text: "主权网络",
+          //   link: "/zh/manual//concepts/self-sovereign-network",
+            //  },
             {
               text: "身份钱包",
               link: "/zh/manual/concepts/wallet",
@@ -529,45 +598,58 @@ const side = {
           text: "版本说明",
           link: "/zh/developer/install/versioning",
         },
-       // {
-       //   text: "其他安装方式",
-       //    link: "/zh/developer/install/additional-installations",
-       //   collapsed: true,
-       //   items: [
-       //     { text: "Linux（Docker 镜像）", link: "/zh/developer/install/linux-via-docker-compose" },
-       //     {
-       //       text: "macOS",
-       //       collapsed: true,
-       //       items: [
-       //         {
-       //           text: "使用脚本（推荐）",
-       //           link: "/zh/developer/install/mac",
-       //         },
-       //         {
-       //           text: "使用 Docker 镜像",
-       //           link: "/zh/developer/install/mac-via-docker-image",
-       //         },
-       //       ],
-       //     },
-       //     {
-       //       text: "Windows (WSL 2)",
-       //       collapsed: true,
-       //       items: [
-       //         {
-        //          text: "使用脚本（推荐）",
-        //          link: "/zh/developer/install/windows",
-        //        },
-        //        {
-        //          text: "使用 Docker 镜像",
-        //          link: "/zh/developer/install/windows-via-docker-image",
-        //        },
-        //      ],
-        //    },
-        //    { text: "PVE", link: "/zh/developer/install/pve" },
-         //   { text: "LXC", link: "/zh/developer/install/lxc" },
-         //   { text: "树莓派", link: "/zh/developer/install/raspberry-pi" },
-        //  ],
-       // },
+          {
+            text: "其他安装方式",
+             link: "/zh/developer/install/additional-installations",
+            collapsed: true,
+            items: [
+              { text: "Linux（Docker 镜像）", link: "/zh/developer/install/linux-via-docker-compose" },
+              {
+                text: "macOS",
+                collapsed: true,
+                items: [
+                  {
+                    text: "使用脚本（推荐）",
+                    link: "/zh/developer/install/mac",
+                  },
+                  {
+                    text: "使用 Docker 镜像",
+                    link: "/zh/developer/install/mac-via-docker-image",
+                  },
+                ],
+              },
+              {
+                text: "Windows (WSL 2)",
+                collapsed: true,
+                items: [
+                  {
+                    text: "使用脚本（推荐）",
+                    link: "/zh/developer/install/windows",
+                  },
+                  {
+                    text: "使用 Docker 镜像",
+                    link: "/zh/developer/install/windows-via-docker-image",
+                  },
+                ],
+              },
+              {
+                text: "PVE",
+                collapsed: true,
+                items: [
+                  {
+                    text: "使用脚本（推荐）",
+                    link: "/zh/developer/install/pve",
+                  },
+                  {
+                    text: "使用 ISO 镜像",
+                    link: "/zh/developer/install/pve-via-iso-image",
+                  },
+                ],
+              },
+              { text: "LXC", link: "/zh/developer/install/lxc" },
+              { text: "树莓派", link: "/zh/developer/install/raspberry-pi" },
+            ],
+          },
       ],
     },
     {
@@ -616,62 +698,62 @@ const side = {
               text: "OlaresManifest",
               link: "/zh/developer/develop/package/manifest",
             },
-            {
+            /*/{
               text: "推荐算法",
               link: "/zh/developer/develop/package/recommend",
-            },
+            },*/
             {
               text: "Helm 扩展",
               link: "/zh/developer/develop/package/extension",
             },
           ],
         },
-        {
-          text: "进阶",
-          collapsed: true,
-          items: [
-            {
-              text: "terminus-info",
-              link: "/zh/developer/develop/advanced/terminus-info",
-            },
-            {
-              text: "Service Provider",
-              link: "/zh/developer/develop/advanced/provider",
-            },
-            {
-              text: "AI",
-              link: "/zh/developer/develop/advanced/ai",
-            },
-            { text: "Cookie", link: "/zh/developer/develop/advanced/cookie" },
-            { text: "数据库", link: "/zh/developer/develop/advanced/database" },
-            {
-              text: "账户",
-              link: "/zh/developer/develop/advanced/account",
-            },
-            {
-              text: "应用市场",
-              link: "/zh/developer/develop/advanced/market",
-            },
+      //  {
+        //      text: "进阶",
+        //     collapsed: true,
+        //    items: [
+        //      {
+        //        text: "terminus-info",
+      //       link: "/zh/developer/develop/advanced/terminus-info",
+        //      },
+        //      {
+        //       text: "Service Provider",
+      //       link: "/zh/developer/develop/advanced/provider",
+        //      },
+        //     {
+        //       text: "AI",
+      //       link: "/zh/developer/develop/advanced/ai",
+        //     },
+        //      { text: "Cookie", link: "/zh/developer/develop/advanced/cookie" },
+        //      { text: "数据库", link: "/zh/developer/develop/advanced/database" },
+        //     {
+        //       text: "账户",
+      //       link: "/zh/developer/develop/advanced/account",
+        //      },
+        //      {
+        //       text: "应用市场",
+      //       link: "/zh/developer/develop/advanced/market",
+        //      },
             // {
             //   text: "Analytic",
             //   link: "/zh/developer/develop/advanced/analytic",
             // },
-            {
-              text: "Websocket",
-              link: "/zh/developer/develop/advanced/websocket",
-            },
-            {
-              text: "文件上传",
-              link: "/zh/developer/develop/advanced/file-upload",
-            },
+        //       {
+        //        text: "Websocket",
+      //        link: "/zh/developer/develop/advanced/websocket",
+        //      },
+        //      {
+        //        text: "文件上传",
+      //       link: "/zh/developer/develop/advanced/file-upload",
+      //      },
             // {
             //   text: "Rss",
             //   link: "/zh/developer/develop/advanced/rss",
             // },
-            {
-              text: "密钥",
-              link: "/zh/developer/develop/advanced/secret",
-            },
+    //      {
+    //         text: "密钥",
+      //         link: "/zh/developer/develop/advanced/secret",
+        //      },
             // {
             //   text: "Notification",
             //   link: "/zh/developer/develop/advanced/notification",
@@ -680,13 +762,12 @@ const side = {
             //   text: "Frontend",
             //   link: "/zh/developer/develop/advanced/frontend",
             // },
-            {
-              text: "Kubesphere",
-              link: "/zh/developer/develop/advanced/kubesphere",
-            },
-          ],
-        },
-
+    //        {
+    //          text: "Kubesphere",
+    //          link: "/zh/developer/develop/advanced/kubesphere",
+    //         },
+    //       ],
+    //      },
         {
           text: "提交应用",
           collapsed: true,
@@ -815,7 +896,7 @@ export const zh = defineConfig({
     socialLinks: [{ icon: "github", link: "https://github.com/beclab/olares" }],
 
     nav: [
-      { text: "Olares", link: "zh/manual/docs-home" },
+      { text: "Olares", link: "zh/manual/overview" },
       { text: "Olares Space", link: "/zh/space/" },
       { text: "应用示例", link: "/zh/use-cases/" },
       { text: "开发者文档", link: "/zh/developer/install/" },

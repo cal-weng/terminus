@@ -3,11 +3,22 @@ outline: [2, 3]
 description: Learn how to manage your Olares account, devices, security settings, and network access policies in My Olares.
 ---
 
-# Account and device management
+# My Olares overview
 
 The **My Olares** page in **Settings** serves as your central hub for managing your Olares account, connected devices, security settings, and access policies.
 
 To access My Olares, open **Settings** and click your avatar in the top-left corner.
+
+![My Olares](/images/manual/olares/my-olares.png#bordered)
+
+## My hardware
+
+View and manage your Olares hardware. You can see details such as **Model**, **Device status**, **Device Identifier**, **CPU**, and **GPU**.
+
+Available actions are:
+
+* **Shutdown**: Click to shut down the Olares device. You will be directed to your LarePass app to finish the operation. After shutdown, Olares device status will show `Powered Off` on LarePass. Remote operations are unavailable until the device is manually turned on.
+* **Restart**: Click to restart Olares. You will be directed to your LarePass app to finish the operation. Olares device status will show `Restarting` on LarePass and return to `Olares running` in about 5–8 minutes.
 
 ## Olares Space
 
@@ -36,6 +47,11 @@ Define system-level access and authentication policies to control how users conn
 ## View login history
 
 Review a detailed record of all login attempts to your Olares account. Each entry displays the **Time**, **Status**, **Source IP Address**, and the **Reason for the attempt**.
+
+## Current Version
+
+Check the current version of your Olares. If a new version is available, go to the **Settings > Olares management** page in the LarePass mobile client to complete the system upgrade.  
+For detailed steps, see [Upgrade Olares](../../larepass/manage-olares.md#upgrade-olares).
 
 ## Device management
 

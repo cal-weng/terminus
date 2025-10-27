@@ -16,20 +16,14 @@ The interface is similar to Windows Explorer or macOS Finder, allowing you to or
 
 It consists of three main components:
 
-* **Drive**: For storing files that don't require frequent synchronization or modifications.
-* **Sync**: For syncing files and directories across devices.
-* **Application**: For development and debugging purposes only.
-* **CloudDrive**: For mounting and accessing your cloud storage services including Google Drive, AWS S3, Tencent Cloud Object Storage (COS) 
+* **Drive**: Stores personal files that don’t require constant synchronization or frequent edits. Each user has a Home directory with default folders such as Documents, Pictures, Videos, and Downloads. External storage (e.g., USB drives or SMB shares) appears under External.
+* **Application**: Reserved for application-specific data. Primarily for development and debugging, not general file storage.
+* **Cloud storage**: Connected through [Integrations](../../larepass/integrations.md), including Google Drive, AWS S3, and Tencent Cloud Object Storage (COS). These allow you to link, access, and manage remote files directly from Olares.
 
 ---
 <div>
 <h4><a href="./add-edit-download">Basic file operations</a></h4>
 Learn the fundamentals of file management in Olares.
-</div>
-
-<div>
-<h4><a href="../../larepass/sync-share">Sync and share files</a></h4>
-Learn how to keep files updated across devices, and how to share files with other Olares member.
 </div>
 
 <div>
@@ -39,7 +33,6 @@ Learn how to mount and access SMB shared folders from NAS devices or network ser
 
 <div>
 <h4><a href="./mount-cloud-storage">Mount cloud storage</a></h4>
-Learn how to mount and access third party cloud storage services in Olares
+Learn how to mount and access third party cloud storage services in Olares.
 </div>
-
 

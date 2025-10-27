@@ -149,7 +149,7 @@ export VERSION="#__VERSION__"
 
 if [[ "x${VERSION}" == "x" || "x${VERSION:3}" == "xVERSION__" ]]; then
     echo "error: Olares version is unspecified, please set the VERSION env var and rerun this script."
-    echo "for example: VERSION=1.12.0-20241124 bash $0"
+    echo "for example: VERSION=1.12.2-20241124 bash $0"
     exit 1
 fi
 
@@ -158,14 +158,20 @@ if [ ! -d $BASE_DIR ]; then
     mkdir -p $BASE_DIR
 fi
 
-cdn_url=${DOWNLOAD_CDN_URL}
+cdn_url=${OLARES_SYSTEM_CDN_SERVICE}
 if [[ -z "${cdn_url}" ]]; then
-    cdn_url="https://dc3p1870nn3cj.cloudfront.net"
+    cdn_url="https://cdn.olares.com"
 fi
 
 set_master_host_ssh_options
 
-CLI_FILE="olares-cli-v${VERSION}_linux_${ARCH}.tar.gz"
+RELEASE_ID="#__RELEASE_ID__"
+if [[ $RELEASE_ID == "" || "${RELEASE_ID:3}" == "RELEASE_ID__" ]]; then
+  RELEASE_ID_SUFFIX=""
+else
+  RELEASE_ID_SUFFIX=".$RELEASE_ID"
+fi
+CLI_FILE="olares-cli-v${VERSION}_linux_${ARCH}${RELEASE_ID_SUFFIX}.tar.gz"
 
 if command_exists olares-cli && [[ "$(olares-cli -v | awk '{print $3}')" == "$VERSION" ]]; then
     INSTALL_OLARES_CLI=$(which olares-cli)
@@ -208,7 +214,7 @@ if [[ ! "$master_olares_version" ]]; then
     exit 1
 fi
 PARAMS="--version $master_olares_version --base-dir $BASE_DIR"
-CDN="--download-cdn-url ${cdn_url}"
+CDN="--cdn-service ${cdn_url}"
 
 if [[ -f $BASE_DIR/.prepared ]]; then
     echo "file $BASE_DIR/.prepared detected, skip preparing phase"
@@ -225,7 +231,10 @@ else
 
     echo "downloading installation wizard..."
     echo ""
-    $sh_c "$INSTALL_OLARES_CLI download wizard $PARAMS $CDN"
+    if [[ ! -z "$RELEASE_ID_SUFFIX" ]]; then
+        DOWNLOAD_WIZARD_RELEASE_ID_PARAM="--release-id $RELEASE_ID"
+    fi
+    $sh_c "$INSTALL_OLARES_CLI download wizard $PARAMS $KUBE_PARAM $CDN $DOWNLOAD_WIZARD_RELEASE_ID_PARAM"
     if [[ $? -ne 0 ]]; then
         echo "error: failed to download installation wizard"
         exit 1
